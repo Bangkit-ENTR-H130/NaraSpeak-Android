@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_1"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/landing_back"
+        android:layout_width="wrap_content"
+        android:layout_height="492dp"
+        android:background="@drawable/frame_121"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_language_24"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_account_circle_24"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/img_menu_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/home_phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Welcome to NaraSpeak"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/img_menu_1"
+        app:layout_constraintStart_toStartOf="@id/img_menu_1"
+        app:layout_constraintTop_toBottomOf="@id/img_menu_1" />
+
+    <TextView
+        android:id="@+id/desc_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:fontFamily="@font/poppins"
+        android:text="Lets get started to have a session with stranger and we are gonna check for  your grammar."
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/img_menu_1"
+        app:layout_constraintStart_toStartOf="@id/img_menu_1"
+        app:layout_constraintTop_toBottomOf="@id/title_1" />
+
+    <ImageView
+        android:id="@+id/img_menu_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home_robot"
+        android:layout_marginTop="150dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Learn with AI Correction"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/img_menu_2"
+        app:layout_constraintEnd_toEndOf="@+id/img_menu_2"
+        app:layout_constraintTop_toBottomOf="@id/img_menu_2" />
+
+    <TextView
+        android:id="@+id/desc_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Start a conversation with a fellow learner to increase your speaking and grammar skills with the help of AI."
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/title_2"
+        app:layout_constraintEnd_toEndOf="@+id/title_2"
+        app:layout_constraintTop_toBottomOf="@id/title_2" />
+
+    <ImageView
+        android:id="@+id/img_menu_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginHorizontal="16dp"
+        android:src="@drawable/home_guide"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Rules and Guidance"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/img_menu_3"
+        app:layout_constraintEnd_toEndOf="@+id/img_menu_3"
+        app:layout_constraintTop_toBottomOf="@id/img_menu_3" />
+
+    <TextView
+        android:id="@+id/desc_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Please be nice and polite to each other. We will record your video call session for transcripting."
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/title_3"
+        app:layout_constraintEnd_toEndOf="@+id/title_3"
+        app:layout_constraintTop_toBottomOf="@id/title_3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:textStyle="bold"
+        android:layout_marginStart="76dp"
+        app:layout_constraintTop_toTopOf="@id/btn_next"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_next"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dot_active"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/dot_2"
+        app:layout_constraintTop_toTopOf="@+id/dot_2"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dot_inactive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dot_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dot_inactive"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintStart_toEndOf="@id/dot_2"
+        app:layout_constraintTop_toTopOf="@+id/dot_2"/>        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:text="Skip"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btn_next" />
+
+
+    <com.belajar.naraspeak.CustomButton
+        android:id="@+id/btn_next"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="60dp"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="607dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

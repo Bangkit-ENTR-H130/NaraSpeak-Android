@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary_1">#EEFAFF</color>
+    <color name="primary_2">#E1F5FE</color>
+    <color name="primary_3">#B3E4FC</color>
+    <color name="primary_4">#80D3F9</color>
+    <color name="primary_5">#28B4F4</color>
+    <color name="primary_6">#03A7F2</color>
+    <color name="primary_7">#0499E3</color>
+    <color name="primary_8">#0386CF</color>
+    <color name="primary_9">#0375BB</color>
+    <color name="primary_10">#025599</color>
+
+    <color name="secondary_1">#E1F2F3</color>
+    <color name="secondary_2">#B3E0DF</color>
+    <color name="secondary_3">#81CDCA</color>
+    <color name="secondary_4">#4EB8B4</color>
+    <color name="secondary_5">#27A9A3</color>
+    <color name="secondary_6">#029991</color>
+    <color name="secondary_7">#027595</color>
+    <color name="secondary_8">#027C73</color>
+    <color name="secondary_9">#046C64</color>
+    <color name="secondary_10">#045047</color>
+
+    <color name="accent_orange">#CC6004</color>
+    <color name="accent_red">#F10000</color>
+    <color name="accent_green">#559902</color>
+    <color name="accent_purple">#990255</color>
+    <color name="accent_black">#282828</color>
+
+</resources>
