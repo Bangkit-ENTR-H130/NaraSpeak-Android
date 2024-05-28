@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/title_3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/poppins_bold"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/desc_3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
         android:text="Please be nice and polite to each other. We will record your video call session for transcripting."
