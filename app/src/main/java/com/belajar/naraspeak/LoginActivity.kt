@@ -28,6 +28,16 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 startActivity(intent)
             }
+
+            btnLogin.setOnClickListener {
+                val intent = Intent(this@LoginActivity, DataFillActivity::class.java)
+                startActivity(intent)
+            }
+
+            btnLoginGoogle.setOnClickListener {
+                val intent = Intent(this@LoginActivity, OtpActivity::class.java)
+                startActivity(intent)
+            }
         }
 
 
