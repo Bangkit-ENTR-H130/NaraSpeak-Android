@@ -11,7 +11,7 @@
 
     <ImageView
         android:id="@+id/landing_back"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="492dp"
         android:background="@drawable/frame_121"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/btn_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -196,20 +196,20 @@
         app:layout_constraintTop_toTopOf="@id/btn_next" />
 
 
-    <com.belajar.naraspeak.CustomButton
+    <com.belajar.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_next"
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="60dp"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.belajar.naraspeak.CustomButton
+    <com.belajar.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_start"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Get Started"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

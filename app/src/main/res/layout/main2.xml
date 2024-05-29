@@ -62,7 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
 
-    <com.belajar.naraspeak.CustomButton
+    <com.belajar.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_next"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
