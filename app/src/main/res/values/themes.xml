@@ -9,4 +9,60 @@
     </style>
 
     <style name="Theme.NaraSpeak" parent="Base.Theme.NaraSpeak" />
+
+    <style name="TextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextStyle.Title">
+        <item name="android:textSize">30sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Title.Bold">
+        <item name="android:textSize">30sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextStyle.Headline1">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Headline1.Bold">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextStyle.Headline2">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Headline2.Bold">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextStyle.Headline3">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Headline3.Bold">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextStyle.Body">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Body.Bold">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
+
 </resources>
