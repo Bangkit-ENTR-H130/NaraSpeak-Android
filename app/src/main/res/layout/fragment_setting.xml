@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primary_1"
+    tools:context=".ui.SettingFragment">
+
+
+
+    <ImageView
+        android:id="@+id/img_photo_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/setting_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full name"
+        style="@style/TextStyle.Title.Bold"
+        android:textColor="@color/primary_1"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_photo_profile"
+        app:layout_constraintStart_toStartOf="@id/img_photo_profile"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Level of Skill"
+        style="@style/TextStyle.Body.Bold"
+        android:textColor="@color/primary_1"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_photo_profile"
+        app:layout_constraintStart_toStartOf="@id/img_photo_profile"/>
+
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Setting"-->
+<!--        android:textColor="@color/primary_10"-->
+<!--        style="@style/TextStyle.Headline2.Bold"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/img_photo_profile"-->
+<!--        app:layout_constraintStart_toStartOf="parent"/>-->
+
+
+
+
+   <include
+       android:id="@+id/card_change_profile"
+       android:layout_height="wrap_content"
+       android:layout_width="match_parent"
+       layout="@layout/card_setting"
+       android:layout_marginHorizontal="16dp"
+       android:layout_marginTop="32dp"
+       app:layout_constraintTop_toBottomOf="@id/img_photo_profile"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <include
+        android:id="@+id/card_change_language"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/card_setting"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_change_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/card_help"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/card_setting"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_change_language"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/card_about"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/card_setting"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_help"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.belajar.naraspeak.ui.customview.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Logout"
+        android:backgroundTint="@color/accent_red"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_about"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

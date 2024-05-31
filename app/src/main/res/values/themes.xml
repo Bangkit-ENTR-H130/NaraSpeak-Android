@@ -10,6 +10,8 @@
 
     <style name="Theme.NaraSpeak" parent="Base.Theme.NaraSpeak" />
 
+    <style name="Theme.NaraSpeak.Appbar" parent="Theme.Material3.DayNight"/>
+
     <!--TEXT STYLE-->
     <style name="TextStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -65,11 +67,21 @@
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/poppins_bold</item>
     </style>
+
+    <style name="TextStyle.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextStyle.Caption.Bold">
+        <item name="android:textSize">10sp</item>
+        <item name="fontFamily">@font/poppins_bold</item>
+    </style>
     <!--TEXT STYLE-->
 
 
     <style name="Item.IndicatorActive" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/accent_orange</item>
+        <item name="android:color">@color/secondary_6</item>
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
     </style>

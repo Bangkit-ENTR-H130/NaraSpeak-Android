@@ -28,10 +28,17 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
         binding.btnAccount.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+        binding.btnStart.setOnClickListener {
+            val intent = Intent(this, HomepageActivity::class.java)
+            startActivity(intent)
         }
 
 

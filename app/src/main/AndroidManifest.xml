@@ -13,6 +13,13 @@
         android:theme="@style/Theme.NaraSpeak"
         tools:targetApi="31">
         <activity
+            android:name=".ShopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomepageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.NaraSpeak.Appbar" />
+        <activity
             android:name=".DataFillActivity"
             android:exported="false" />
         <activity

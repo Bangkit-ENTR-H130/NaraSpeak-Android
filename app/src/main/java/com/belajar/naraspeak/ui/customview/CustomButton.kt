@@ -13,7 +13,8 @@ class CustomButton @JvmOverloads constructor(
 ) : AppCompatButton(context, attrs) {
 
     private var button: Drawable = ContextCompat.getDrawable(context, R.drawable.button) as Drawable
-    private var outlineButton: Drawable = ContextCompat.getDrawable(context, R.drawable.button_outline) as Drawable
+    private var outlineButton: Drawable =
+        ContextCompat.getDrawable(context, R.drawable.button_outline) as Drawable
     private var textColor: Int = 0
     private var textOutline: Int = 0
 
@@ -26,13 +27,14 @@ class CustomButton @JvmOverloads constructor(
         super.onDraw(canvas)
         background = button
         setTextColor(textColor)
+
         isAllCaps = false
         height = 40
 
         if ((id == R.id.btn_login_google) || (id == R.id.btn_register_google)) {
-                background = outlineButton
-                setTextColor(textOutline)
-            }
+            background = outlineButton
+            setTextColor(textOutline)
+        }
 
     }
 }

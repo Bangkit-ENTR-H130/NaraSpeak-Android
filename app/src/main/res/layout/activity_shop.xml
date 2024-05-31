@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_1"
+    android:fillViewport="true"
+    tools:context=".ShopActivity">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/premium_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/premium_photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <TextView
+        android:id="@+id/tv_premium_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upgrade To Premium"
+        android:gravity="center"
+        style="@style/TextStyle.Headline1.Bold"
+        android:textColor="@color/primary_10"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/premium_photo"/>
+
+    <TextView
+        android:id="@+id/tv_premium_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Our Offer"
+        android:gravity="center"
+        style="@style/TextStyle.Headline2"
+        app:layout_constraintTop_toBottomOf="@id/tv_premium_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/premium_weekly_card"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        layout="@layout/card_premium_weekly"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_premium_subtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/premium_monthly_card"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        layout="@layout/card_premium_monthly"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/premium_weekly_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/premium_annually_card"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        layout="@layout/card_premium_anually"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/premium_monthly_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.belajar.naraspeak.ui.customview.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Confirm"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/premium_annually_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
