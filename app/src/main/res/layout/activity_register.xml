@@ -69,17 +69,21 @@
         android:id="@+id/layout_email_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeWidth="0dp"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email_register"
-        android:layout_marginHorizontal="16dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_register">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center_vertical"
             android:autofillHints="emailAddress"
             android:drawableStart="@drawable/baseline_email_24"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,6 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
+        app:boxBackgroundMode="outline"
         app:endIconTint="@color/primary_10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +115,8 @@
         <com.belajar.naraspeak.ui.customview.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="16dp"
             android:autofillHints="password"
             android:drawableStart="@drawable/baseline_lock_outline_24"
             android:inputType="textPassword"/>
@@ -134,6 +141,7 @@
         android:layout_height="wrap_content"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/primary_10"
+        app:boxBackgroundMode="outline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password"
@@ -142,6 +150,7 @@
         <com.belajar.naraspeak.ui.customview.CustomEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:autofillHints="password"
             android:drawableStart="@drawable/baseline_lock_outline_24"
             android:inputType="textPassword"/>
@@ -197,7 +206,7 @@
     <com.belajar.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_register_google"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:drawableEnd="@drawable/google_icon"

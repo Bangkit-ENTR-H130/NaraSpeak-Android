@@ -1,16 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.NaraSpeak" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.NaraSpeak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@color/secondary_3</item>
+        <item name="android:textColor">@color/accent_black</item>
 
     </style>
 
     <style name="Theme.NaraSpeak" parent="Base.Theme.NaraSpeak" />
 
-    <style name="Theme.NaraSpeak.Appbar" parent="Theme.Material3.DayNight"/>
+    <style name="Theme.NaraSpeak.Appbar" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColor">@color/accent_black</item>
+        <item name="android:lineBreakStyle" tools:targetApi="tiramisu">none</item>
+
+    </style>
 
     <!--TEXT STYLE-->
     <style name="TextStyle">

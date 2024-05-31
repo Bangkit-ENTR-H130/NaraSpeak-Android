@@ -1,7 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.NaraSpeak" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.NaraSpeak" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">@color/secondary_3</item>
+
     </style>
+
+    <style name="Theme.NaraSpeak" parent="Base.Theme.NaraSpeak" />
+
+    <style name="Theme.NaraSpeak.Appbar" parent="Theme.MaterialComponents.DayNight"/>
 </resources>
