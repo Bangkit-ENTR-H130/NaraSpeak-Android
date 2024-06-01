@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_1"
+    tools:context=".GroupCallActivity">
+
+    <org.webrtc.SurfaceViewRenderer
+        android:id="@+id/vc_user_1"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.belajar.naraspeak.ui.customview.CustomButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@id/vc_user_1"
+        app:layout_constraintStart_toStartOf="@id/vc_user_1"/>
+
+    <org.webrtc.SurfaceViewRenderer
+        android:id="@+id/vc_user_2"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vc_user_1"/>
+
+    <com.belajar.naraspeak.ui.customview.CustomButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@id/vc_user_2"
+        app:layout_constraintStart_toStartOf="@id/vc_user_2"/>
+
+    <org.webrtc.SurfaceViewRenderer
+        android:id="@+id/vc_user_3"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vc_user_2"/>
+
+    <com.belajar.naraspeak.ui.customview.CustomButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="@id/vc_user_3"
+        app:layout_constraintStart_toStartOf="@id/vc_user_3"/>
+
+    <org.webrtc.SurfaceViewRenderer
+        android:id="@+id/vc_user_4"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vc_user_3"/>
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        layout="@layout/card_call"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
