@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.belajar.naraspeak.databinding.FragmentHomeBinding
+import com.bumptech.glide.Glide
 
 
 class HomeFragment : Fragment() {
@@ -38,7 +39,6 @@ class HomeFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.btn_shop -> {
-
                         findNavController().navigate(R.id.action_homeFragment_to_shopActivity)
                     }
                 }
@@ -46,6 +46,13 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.cardFeature2.apply {
+            Glide.with(requireActivity())
+                .load(R.drawable.homepage_menu_3)
+                .into(featureIcon)
+
+            featureIcon.maxHeight = 130
+        }
     }
 
 
