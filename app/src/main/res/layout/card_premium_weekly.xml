@@ -99,6 +99,18 @@
             app:layout_constraintTop_toBottomOf="@id/tv_monthly_2"
             app:layout_constraintStart_toStartOf="@id/iv_star"/>
 
+        <ImageView
+            android:id="@+id/selected_indicator"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/baseline_star_24"
+            android:background="@color/secondary_6"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
