@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/homeFragment"
-        android:title=""
+        android:title="Home"
         android:icon="@drawable/baseline_home_filled_24"/>
 
     <item
@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/settingFragment"
-        android:title=""
+        android:title="Setting"
         android:icon="@drawable/baseline_settings_24"/>
 
 </menu>
