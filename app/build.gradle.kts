@@ -55,4 +55,7 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
+    implementation("com.mesibo.api:webrtc:1.0.5")
+
+
 }
