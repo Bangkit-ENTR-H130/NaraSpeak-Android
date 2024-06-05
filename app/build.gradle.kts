@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -56,6 +57,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
     implementation("com.mesibo.api:webrtc:1.0.5")
+
+    implementation(libs.gson)
+    implementation(libs.firebase.database)
+
+
 
 
 }

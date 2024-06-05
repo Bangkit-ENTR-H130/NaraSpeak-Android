@@ -77,6 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_email_register">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
+            android:id="@+id/ed_email_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
