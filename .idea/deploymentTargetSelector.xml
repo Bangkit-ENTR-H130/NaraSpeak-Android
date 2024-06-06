@@ -4,13 +4,13 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-05T14:59:59.035449200Z">
+        <DropdownSelection timestamp="2024-06-06T15:17:38.597672Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="FirebaseDirectAccess" identifier="reservation=projects/my-firebase-chat-7e378/deviceSessions/session-bm5exyhh0qu6a" />
+              <DeviceId pluginId="FirebaseDirectAccess" identifier="reservation=projects/my-firebase-chat-7e378/deviceSessions/session-1p6iln3co4ivn" />
             </handle>
             <template>
-              <DeviceId pluginId="FirebaseDirectAccess" type="TEMPLATE" identifier="model_id=x1q/29" />
+              <DeviceId pluginId="FirebaseDirectAccess" type="TEMPLATE" identifier="model_id=a51/31" />
             </template>
           </Target>
         </DropdownSelection>

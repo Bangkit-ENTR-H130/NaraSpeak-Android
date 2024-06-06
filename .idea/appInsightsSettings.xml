@@ -9,7 +9,7 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.belajar.naraspeak" />
-                  <option name="mobileSdkAppId" value="1:43008072485:android:83839579f6d643fba058cc" />
+                  <option name="mobileSdkAppId" value="1:43008072485:android:dab2ca595c6f9e0ea058cc" />
                   <option name="projectId" value="webrtc-3da78" />
                   <option name="projectNumber" value="43008072485" />
                 </ConnectionSetting>

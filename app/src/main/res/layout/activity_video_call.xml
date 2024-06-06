@@ -37,6 +37,7 @@
         android:text="01:59"
         style="@style/TextStyle.Title"
         android:alpha="0.5"
+        android:padding="8dp"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +47,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Recommended Topic : What do you think about climate change"
+        android:textAllCaps="false"
         style="@style/TextStyle.Body.Bold"
         android:backgroundTint="@color/secondary_6"
         android:alpha="0.7"
+        android:padding="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,6 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <include
+        android:id="@+id/card_overlay_call"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         layout="@layout/card_call"
@@ -66,4 +70,72 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/incomingCallLayout"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:background="@color/primary_10"
+        android:visibility="gone"
+        android:padding="16dp"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="someone is calling"
+            android:id="@+id/incomingNameTV"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:src="@drawable/baseline_star_24"
+            android:padding="15dp"
+            android:id="@+id/acceptButton"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:src="@drawable/baseline_phone_enabled_24"
+            android:padding="15dp"
+            android:id="@+id/rejectButton"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/whoToCallLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/incomingCallLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.267">
+
+        <EditText
+            android:id="@+id/targetUserNameEt"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="30dp"
+            android:hint="who to call ?" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/callBtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:layout_below="@id/targetUserNameEt"
+            android:layout_marginHorizontal="30dp"
+            android:text="call" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
