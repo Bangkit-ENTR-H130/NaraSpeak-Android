@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.belajar.naraspeak"
+    namespace = "com.bangkit.naraspeak"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.belajar.naraspeak"
+        applicationId = "com.bangkit.naraspeak"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

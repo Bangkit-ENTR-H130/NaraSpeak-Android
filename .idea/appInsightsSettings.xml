@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.belajar.naraspeak" />
-                  <option name="mobileSdkAppId" value="1:43008072485:android:dab2ca595c6f9e0ea058cc" />
-                  <option name="projectId" value="webrtc-3da78" />
-                  <option name="projectNumber" value="43008072485" />
+                  <option name="appId" value="com.bangkit.naraspeak" />
+                  <option name="mobileSdkAppId" value="1:744929906379:android:15e31809354d4d099e154e" />
+                  <option name="projectId" value="naraspeak" />
+                  <option name="projectNumber" value="744929906379" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

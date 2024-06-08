@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vc_user_1"/>
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vc_user_2"/>
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@tools:sample/lorem"

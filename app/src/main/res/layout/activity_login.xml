@@ -76,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email">
 
-        <com.belajar.naraspeak.ui.customview.CustomEditText
+        <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_email_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_password">
 
-        <com.belajar.naraspeak.ui.customview.CustomEditText
+        <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_password_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_password" />
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -181,7 +181,7 @@
         app:layout_constraintStart_toEndOf="@+id/tv_or"
         app:layout_constraintTop_toTopOf="@+id/tv_or" />
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_login_google"
         android:layout_width="match_parent"
         android:layout_height="40dp"

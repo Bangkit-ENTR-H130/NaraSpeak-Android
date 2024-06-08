@@ -45,7 +45,7 @@
     </RelativeLayout>
 
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/secondary_6"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Recommended Topic : What do you think about climate change"

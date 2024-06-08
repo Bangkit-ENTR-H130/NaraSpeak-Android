@@ -77,7 +77,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email_register">
 
-        <com.belajar.naraspeak.ui.customview.CustomEditText
+        <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_email_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_password_register"
         android:layout_marginHorizontal="16dp">
 
-        <com.belajar.naraspeak.ui.customview.CustomEditText
+        <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_password_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password"
         android:layout_marginHorizontal="16dp">
 
-        <com.belajar.naraspeak.ui.customview.CustomEditText
+        <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -207,7 +207,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_or" />
 
     <!-- UBAH JADI CUSTOM BUTTON OUTLINE -->
-    <com.belajar.naraspeak.ui.customview.CustomButton
+    <com.bangkit.naraspeak.ui.customview.CustomButton
         android:id="@+id/btn_register_google"
         android:layout_width="match_parent"
         android:layout_height="40dp"

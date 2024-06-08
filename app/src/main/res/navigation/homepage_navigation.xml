@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.belajar.naraspeak.ui.homepage.home.HomeFragment"
+        android:name="com.bangkit.naraspeak.ui.homepage.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -20,12 +20,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.belajar.naraspeak.ui.homepage.setting.SettingFragment"
+        android:name="com.bangkit.naraspeak.ui.homepage.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <activity
         android:id="@+id/shopActivity"
-        android:name="com.belajar.naraspeak.ui.shop.ShopActivity"
+        android:name="com.bangkit.naraspeak.ui.shop.ShopActivity"
         android:label="activity_shop"
         tools:layout="@layout/activity_shop" />
 </navigation>
