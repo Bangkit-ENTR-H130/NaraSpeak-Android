@@ -53,7 +53,6 @@ class WebRtcClient(
     init {
         initPeerConnectionFactory()
         peerConnectionFactory = createPeerConnectionFactory()
-        peerConnection = createPeerConnection(observer)
 
         iceServer.add(
             PeerConnection.IceServer.builder("turn:a.relay.metered.ca:443?transport=tcp")
@@ -62,10 +61,11 @@ class WebRtcClient(
                 .createIceServer()
         )
 
-        localVideoSource = peerConnectionFactory.createVideoSource(false)
-        localAudioSource = peerConnectionFactory.createAudioSource(object : MediaConstraints() {
+        peerConnection = createPeerConnection(observer)
 
-        })
+
+        localVideoSource = peerConnectionFactory.createVideoSource(false)
+        localAudioSource = peerConnectionFactory.createAudioSource(mediaConstraints)
 
         mediaConstraints.mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
 
@@ -93,7 +93,7 @@ class WebRtcClient(
 
 
     private fun createPeerConnection(observer: Observer): PeerConnection {
-        return peerConnectionFactory.createPeerConnection(iceServer, observer) as PeerConnection
+        return peerConnectionFactory.createPeerConnection(iceServer, observer) ?: peerConnection
     }
 
 
@@ -229,7 +229,7 @@ class WebRtcClient(
                 sender = username,
                 target = target,
                 data = gson.toJson(iceCandidate),
-                dataModelType = DataModelType.IceCandidate,
+                dataModelType = DataModelType.IceCandidate
             )
         )
 

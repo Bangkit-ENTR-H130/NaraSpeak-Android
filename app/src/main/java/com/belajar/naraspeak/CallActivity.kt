@@ -1,7 +1,6 @@
 package com.belajar.naraspeak
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,21 +11,21 @@ import com.belajar.naraspeak.data.model.DataModel
 import com.belajar.naraspeak.data.model.DataModelType
 import com.belajar.naraspeak.data.repository.VideoCallRepository
 import com.belajar.naraspeak.data.webrtc.FirebaseClient
-import com.belajar.naraspeak.databinding.ActivityVideoCallBinding
-import org.webrtc.RendererCommon
+import com.belajar.naraspeak.databinding.ActivityCallBinding
 
-class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnectionListener {
+class CallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnectionListener {
 
-    private lateinit var binding: ActivityVideoCallBinding
-    private lateinit var videoCallRepository: VideoCallRepository
+    private lateinit var binding: ActivityCallBinding
+    private lateinit var repository: VideoCallRepository
     private val firebaseClient: FirebaseClient = FirebaseClient()
 
-    private var isMuted: Boolean = false
-    private val isCameraDisabled: Boolean = false
+    private var isMicrophoneMuted: Boolean = false
+    private var isCameraDisabled: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityVideoCallBinding.inflate(layoutInflater)
+        binding = ActivityCallBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -34,48 +33,33 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             insets
         }
 
-        videoCallRepository = VideoCallRepository.getInstance(firebaseClient)
-
-
-        initiate()
+        repository = VideoCallRepository.getInstance(firebaseClient)
+        init()
 
 
     }
 
-    private fun initiate() {
-        videoCallRepository.setRemoteView(binding.vcUser2)
-        videoCallRepository.setLocalView(binding.vcUser1)
-        binding.vcUser1.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
-        binding.vcUser2.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
+    private fun init() {
+        repository.setRemoteView(binding.remoteView)
+        repository.setLocalView(binding.localView)
 
-
-
-
-        videoCallRepository.connectionListener = this
+        repository.connectionListener = this
 
         binding.callBtn.setOnClickListener {
-            videoCallRepository.sendCallRequest(
+            repository.sendCallRequest(
                 binding.targetUserNameEt.text.toString(),
                 object : FirebaseClient.FirebaseStatusListener {
                     override fun onError() {
-                        Toast.makeText(
-                            this@VideoCallActivity,
-                            "Couldnt make the call",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        Toast.makeText(this@CallActivity, "Couldnt make the call", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onSuccess() {
                     }
 
                 })
-
         }
 
-
-
-        videoCallRepository.detectCallRequest(object : FirebaseClient.NewEventListener {
+        repository.detectCallRequest(object : FirebaseClient.NewEventListener {
             override fun onNewEvent(dataModel: DataModel) {
                 if (dataModel.dataModelType == DataModelType.StartCall) {
                     runOnUiThread {
@@ -84,38 +68,38 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
                         binding.acceptButton.setOnClickListener {
                             //receive the call
-//                        videoCallRepository.st(dataModel.sender.toString())
-                            Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
-                            videoCallRepository.startCall(dataModel.sender.toString())
+                            repository.startCall(dataModel.sender.toString())
 
                             binding.incomingCallLayout.visibility = View.GONE
-                            binding.whoToCallLayout.visibility = View.GONE
-
                         }
                         binding.rejectButton.setOnClickListener {
                             binding.incomingCallLayout.visibility = View.GONE
                         }
                     }
-
                 }
             }
 
         })
-        binding.cardOverlayCall.btnCameraSwitch.setOnClickListener {
-            videoCallRepository.switchCamera()
+        binding.switchCameraButton.setOnClickListener {
+            repository.switchCamera()
         }
 
-        binding.cardOverlayCall.btnHungUp.setOnClickListener {
-            videoCallRepository.disconnect()
+        binding.micButton.setOnClickListener {
+
+            repository.muteMicrophone(isMicrophoneMuted)
+            isMicrophoneMuted = !isMicrophoneMuted
+        }
+
+        binding.videoButton.setOnClickListener {
+
+            repository.disableCamera(isCameraDisabled)
+            isCameraDisabled = !isCameraDisabled
+        }
+
+        binding.endCallButton.setOnClickListener {
+            repository.disconnect()
             finish()
         }
-
-        binding.cardOverlayCall.btnMute.setOnClickListener {
-            videoCallRepository.muteMicrophone(isMuted)
-            isMuted = !isMuted
-        }
-
-
     }
 
     override fun webRtcConnected() {
@@ -123,18 +107,14 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             binding.incomingCallLayout.visibility = View.GONE
             binding.whoToCallLayout.visibility = View.GONE
             binding.callLayout.visibility = View.VISIBLE
-
         }
-
     }
 
     override fun webRtcClosed() {
         runOnUiThread {
             finish()
-
         }
     }
-
 
 
 }

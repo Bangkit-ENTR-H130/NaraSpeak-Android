@@ -30,8 +30,7 @@ class FirebaseClient {
                 if (dataModel.target != null) {
                     if (snapshot.child("VideoCalls").child("users").child(dataModel.target).exists()) {
                         db.child("VideoCalls").child("users").child(dataModel.target).child("video_call_data")
-                            .setValue(gson.toJson(dataModel)).addOnCompleteListener {
-                        }
+                            .setValue(gson.toJson(dataModel))
                     } else {
                         statusListener.onError()
                     }

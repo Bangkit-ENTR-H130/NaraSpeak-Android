@@ -1,6 +1,7 @@
 package com.belajar.naraspeak.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.belajar.naraspeak.data.model.DataModel
 import com.belajar.naraspeak.data.model.DataModelType
 import com.belajar.naraspeak.data.webrtc.FirebaseClient
@@ -38,26 +39,27 @@ class VideoCallRepository(
             object : PeerConnectionObserver() {
                 override fun onAddStream(mediaStream: MediaStream?) {
                     super.onAddStream(mediaStream)
-                    mediaStream?.videoTracks?.get(0)?.addSink(remoteView)
+                    try {
+                        mediaStream?.videoTracks?.get(0)?.addSink(remoteView)
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message.toString())
+                    }
                 }
 
                 override fun onConnectionChange(newState: PeerConnection.PeerConnectionState?) {
                     super.onConnectionChange(newState)
-                    newState?.let {
-                        if (it == PeerConnection.PeerConnectionState.DISCONNECTED) {
+                        if (newState == PeerConnection.PeerConnectionState.DISCONNECTED) {
                             connectionListener?.webRtcClosed()
                         }
-                        if (it == PeerConnection.PeerConnectionState.CONNECTED) {
+                        if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
                             connectionListener?.webRtcConnected()
                         }
-                    }
+
                 }
 
                 override fun onIceCandidate(iceCandidate: IceCandidate?) {
                     super.onIceCandidate(iceCandidate)
-                    if (iceCandidate != null) {
-                        webRtcClient.sendIceCandidate(iceCandidate, currentTarget.toString())
-                    }
+                    iceCandidate?.let { webRtcClient.sendIceCandidate(it, currentTarget.toString()) }
 
                 }
             }
@@ -189,6 +191,7 @@ class VideoCallRepository(
 
 
     companion object {
+        private const val TAG = "VideoCallRepository"
         private var instance: VideoCallRepository? = null
         fun getInstance(
             firebaseClient: FirebaseClient
