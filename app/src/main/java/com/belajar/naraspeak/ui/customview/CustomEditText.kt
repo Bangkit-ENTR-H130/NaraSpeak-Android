@@ -8,10 +8,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
 import com.belajar.naraspeak.R
-import com.belajar.naraspeak.isValidEmail
-import com.belajar.naraspeak.isValidPassword
+import com.belajar.naraspeak.helper.isValidEmail
 
 class CustomEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

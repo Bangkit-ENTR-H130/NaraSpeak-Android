@@ -24,41 +24,41 @@
             android:name=".CallActivity"
             android:exported="false" />
         <activity
-            android:name=".GroupCallActivity"
+            android:name=".ui.groupcall.GroupCallActivity"
             android:exported="false" />
         <activity
-            android:name=".VideoCallActivity"
+            android:name=".ui.videocall.VideoCallActivity"
             android:exported="false" />
         <activity
-            android:name=".CompleteSessionActivity"
+            android:name=".ui.result.CompleteSessionActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
+            android:name=".ui.result.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".ShopActivity"
+            android:name=".ui.shop.ShopActivity"
             android:exported="false" />
         <activity
-            android:name=".HomepageActivity"
+            android:name=".ui.homepage.HomepageActivity"
             android:exported="false"
             android:theme="@style/Theme.NaraSpeak.Appbar" />
         <activity
-            android:name=".DataFillActivity"
+            android:name=".ui.datafill.DataFillActivity"
             android:exported="false" />
         <activity
-            android:name=".OtpActivity"
+            android:name=".ui.verification.OtpActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.landingpage.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.landingpage.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

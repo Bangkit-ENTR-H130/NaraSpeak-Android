@@ -1,4 +1,4 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.videocall
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.belajar.naraspeak.R
 import com.belajar.naraspeak.data.model.DataModel
 import com.belajar.naraspeak.data.model.DataModelType
 import com.belajar.naraspeak.data.repository.VideoCallRepository

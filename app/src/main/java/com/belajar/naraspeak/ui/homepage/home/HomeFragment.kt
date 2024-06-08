@@ -1,19 +1,12 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.homepage.home
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.belajar.naraspeak.R
 import com.belajar.naraspeak.databinding.FragmentHomeBinding
 import com.bumptech.glide.Glide
 

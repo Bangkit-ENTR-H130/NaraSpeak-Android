@@ -1,20 +1,20 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.datafill
 
 import android.os.Bundle
-import android.view.View
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.belajar.naraspeak.databinding.ActivityShopBinding
+import com.belajar.naraspeak.R
+import com.belajar.naraspeak.databinding.ActivityDataFillBinding
 
-class ShopActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityShopBinding
+class DataFillActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDataFillBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityShopBinding.inflate(layoutInflater)
+        binding = ActivityDataFillBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -22,9 +22,12 @@ class ShopActivity : AppCompatActivity() {
             insets
         }
 
-        binding.premiumWeeklyCard.root.setOnClickListener {
-            binding.premiumWeeklyCard.selectedIndicator.visibility = View.VISIBLE
-        }
+        setupSpinner()
+    }
 
+    private fun setupSpinner() {
+        val levels = arrayOf("Beginner", "Intermediate", "Fluent", "Native")
+        val adapter = ArrayAdapter(this@DataFillActivity, R.layout.spinner_item, levels)
+        binding.spinnerLevel.adapter = adapter
     }
 }

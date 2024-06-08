@@ -1,4 +1,4 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.register
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,13 +11,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.belajar.naraspeak.R
+import com.belajar.naraspeak.ui.videocall.VideoCallActivity
 import com.belajar.naraspeak.data.repository.VideoCallRepository
 import com.belajar.naraspeak.data.webrtc.FirebaseClient
 import com.belajar.naraspeak.databinding.ActivityRegisterBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignIn: GoogleSignInClient
 
     //move
     private lateinit var repository: VideoCallRepository
@@ -36,6 +44,40 @@ class RegisterActivity : AppCompatActivity() {
         repository = VideoCallRepository.getInstance(firebaseClient)
 
         testDatabase()
+
+        initializeAuth()
+
+        val email = binding.edEmailRegister.text.toString()
+        val password = binding.edPasswordRegister.text.toString()
+        val confirmPassword = binding.edConfirmPassword.text.toString()
+
+        binding.btnRegisterGoogle.setOnClickListener {
+
+        }
+
+
+
+
+
+    }
+
+    private fun initializeAuth() {
+        auth = FirebaseAuth.getInstance()
+
+        val option = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(R.string.default_web_client_id)
+            .requestEmail()
+            .build()
+        googleSignIn = GoogleSignIn.getClient(this, option)
+
+
+
+
+        val user = auth.currentUser
+        user?.sendEmailVerification()?.addOnSuccessListener {
+
+        }
 
 
     }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_1"
-    tools:context=".GroupCallActivity">
+    tools:context=".ui.groupcall.GroupCallActivity">
 
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_1"

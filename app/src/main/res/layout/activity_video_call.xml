@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_1"
-    tools:context=".VideoCallActivity">
+    tools:context=".ui.videocall.VideoCallActivity">
 
     <RelativeLayout
         android:id="@+id/call_layout"

@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_1"
-    tools:context=".LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/frame_121"
+        android:layout_height="492dp"
+        android:background="@drawable/frame_121"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/logo"
@@ -76,6 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_email">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
+            android:id="@+id/ed_email_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -112,6 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_password">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
+            android:id="@+id/ed_password_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"

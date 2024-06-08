@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/primary_1"
     app:layoutDescription="@xml/activity_main_scene"
-    tools:context=".MainActivity">
+    tools:context=".ui.landingpage.MainActivity">
 
     <ImageView
         android:id="@+id/landing_back"

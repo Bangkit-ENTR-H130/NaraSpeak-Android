@@ -1,8 +1,7 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.helper
 
 import android.view.View
 import android.widget.ProgressBar
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 

@@ -1,20 +1,31 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.shop
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.belajar.naraspeak.R
+import com.belajar.naraspeak.databinding.ActivityShopBinding
 
-class ResultActivity : AppCompatActivity() {
+class ShopActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityShopBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_result)
+        binding = ActivityShopBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        binding.premiumWeeklyCard.root.setOnClickListener {
+            binding.premiumWeeklyCard.selectedIndicator.visibility = View.VISIBLE
+        }
+
     }
 }

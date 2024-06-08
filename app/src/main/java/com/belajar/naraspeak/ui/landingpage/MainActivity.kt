@@ -1,14 +1,14 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.landingpage
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.belajar.naraspeak.ui.homepage.HomepageActivity
+import com.belajar.naraspeak.ui.login.LoginActivity
+import com.belajar.naraspeak.R
 import com.belajar.naraspeak.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

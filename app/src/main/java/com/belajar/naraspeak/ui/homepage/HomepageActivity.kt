@@ -1,4 +1,4 @@
-package com.belajar.naraspeak
+package com.belajar.naraspeak.ui.homepage
 
 import android.os.Bundle
 import android.view.View
@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.belajar.naraspeak.R
 import com.belajar.naraspeak.databinding.ActivityHomepageBinding
 
 class HomepageActivity : AppCompatActivity() {

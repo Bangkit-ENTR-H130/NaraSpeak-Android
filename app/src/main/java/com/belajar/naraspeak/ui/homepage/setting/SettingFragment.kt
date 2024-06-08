@@ -1,4 +1,4 @@
-package com.belajar.naraspeak.ui
+package com.belajar.naraspeak.ui.homepage.setting
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.belajar.naraspeak.R
-import com.belajar.naraspeak.databinding.FragmentHomeBinding
 import com.belajar.naraspeak.databinding.FragmentSettingBinding
 import com.bumptech.glide.Glide
 

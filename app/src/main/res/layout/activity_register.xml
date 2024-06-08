@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_1"
-    tools:context=".RegisterActivity">
-    
+    tools:context=".ui.register.RegisterActivity">
+
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/frame_121"
+        android:layout_height="492dp"
+        android:background="@drawable/frame_121"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/logo"
@@ -114,6 +115,7 @@
         android:layout_marginHorizontal="16dp">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
+            android:id="@+id/ed_password_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -149,6 +151,7 @@
         android:layout_marginHorizontal="16dp">
 
         <com.belajar.naraspeak.ui.customview.CustomEditText
+            android:id="@+id/ed_confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"

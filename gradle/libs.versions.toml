@@ -13,6 +13,7 @@ navigationFragment = "2.7.7"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
 gson = "2.10.1"
+firebaseAuth = "23.0.0"
 
 
 [libraries]
@@ -27,6 +28,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 
 [plugins]

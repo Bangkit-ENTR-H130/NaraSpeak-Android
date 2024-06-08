@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_1"
-    tools:context=".CompleteSessionActivity">
+    tools:context=".ui.result.CompleteSessionActivity">
 
     <TextView
         android:id="@+id/tv_finish_title"
