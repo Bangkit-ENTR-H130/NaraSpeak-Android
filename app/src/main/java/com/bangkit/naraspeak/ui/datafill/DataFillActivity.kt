@@ -21,7 +21,6 @@ import com.google.firebase.auth.auth
 class DataFillActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataFillBinding
     private lateinit var auth: FirebaseAuth
-    private val withGoogleSignUp = intent.getStringExtra(RegisterActivity.SIGN_UP_GOOGLE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,33 +33,54 @@ class DataFillActivity : AppCompatActivity() {
         }
 
         auth = Firebase.auth
+        val user = auth.currentUser
+
+        val withGoogleSignUp = intent.getStringExtra(RegisterActivity.SIGN_UP_GOOGLE)
+        Log.d("GoogleSignUp", withGoogleSignUp.toString())
+
+        if (withGoogleSignUp != null) {
+            binding.layoutPassword.visibility = View.VISIBLE
+            binding.tvPassword.visibility = View.VISIBLE
+
+        }
+
+
 
         binding.btnSubmit.setOnClickListener {
-            val user = auth.currentUser
 
+            if (user != null) {
+                val profileUpdate = UserProfileChangeRequest.Builder()
+                    .setDisplayName(binding.edName.text.toString())
+                    .build()
 
-            if (user!= null) {
-                if (binding.edName.text.toString().isNotEmpty()) {
-                    val profileUpdate = UserProfileChangeRequest.Builder()
-                        .setDisplayName(binding.edName.toString())
-                        .build()
-
-                    user.updateProfile(profileUpdate)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                Log.d(TAG, "Name updated")
-                            } else {
-                                Log.d(TAG, "Name not updated: ${it.exception}")
-                            }
+                user.updateProfile(profileUpdate)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Log.d(TAG, "Name updated")
+                        } else {
+                            Log.d(TAG, "Name not updated: ${it.exception}")
                         }
-                }
 
-                if (withGoogleSignUp != null) {
-                    binding.layoutPassword.visibility = View.VISIBLE
-                    binding.tvPassword.visibility = View.VISIBLE
+                        Log.d(TAG, "name: ${user.displayName}")
+                        Log.d(TAG, "nameupdate: ${profileUpdate.displayName}")
+                    }
 
-                    user.updatePassword(binding.edPassword.text.toString())
-                }
+                Log.d(
+                    TAG,binding.spinnerLevel.selectedItem.toString())
+
+
+
+
+                val password = user.updatePassword(binding.edPassword.text.toString())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Log.d(TAG, "password updated")
+                        } else {
+                            Log.d(TAG, "password not updated ${it.exception}")
+
+                        }
+                    }
+                Log.d(TAG, "password updated ${password.isSuccessful}")
 
                 val intent = Intent(this@DataFillActivity, HomepageActivity::class.java)
                 startActivity(intent)

@@ -1,5 +1,6 @@
 package com.bangkit.naraspeak.ui.register
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 
@@ -67,24 +69,21 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initializeAuth() {
-
         val option = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(R.string.default_web_client_id.toString())
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignIn = GoogleSignIn.getClient(this, option)
 
         auth = Firebase.auth
 
-
-
     }
 
     private val googleSignUpLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        if (it.resultCode == RESULT_OK) {
+        if (it.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
@@ -96,18 +95,16 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUpWithGoogle(idToken: String?) {
+    private fun signUpWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     Log.d(TAG, "signInWithCredential:success")
-                    if (auth.currentUser != null) {
-                        val intent = Intent(this@RegisterActivity, DataFillActivity::class.java)
-                        intent.putExtra(SIGN_UP_GOOGLE, "with_google_sign_up")
-                        startActivity(intent)
-                        finish()
-                    }
+                    val intent = Intent(this@RegisterActivity, DataFillActivity::class.java)
+                    intent.putExtra(SIGN_UP_GOOGLE, "with_google_sign_up")
+                    startActivity(intent)
+                    finish()
 
                 } else {
                     Log.w(TAG, "signInWithCredential: ${it.exception}")
@@ -183,8 +180,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+
+
     companion object {
-        private val TAG = RegisterActivity::class.java.simpleName
+        private const val TAG = "RegisterActivity"
         const val SIGN_UP_GOOGLE = "sign_up_google"
     }
 }

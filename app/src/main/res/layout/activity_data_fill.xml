@@ -67,7 +67,7 @@
     <com.bangkit.naraspeak.ui.customview.CustomEditText
         android:id="@+id/ed_name"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:layout_marginStart="16dp"
@@ -92,7 +92,7 @@
     <Spinner
         android:id="@+id/spinner_level"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="55dp"
         android:spinnerMode="dropdown"
         android:background="@drawable/spinner"
         android:paddingStart="16dp"
@@ -157,7 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        app:boxBackgroundMode="none"
+        app:boxBackgroundMode="outline"
         app:boxStrokeWidth="0dp"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/primary_10"
@@ -170,9 +170,10 @@
         <com.bangkit.naraspeak.ui.customview.CustomEditText
             android:id="@+id/ed_password"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="55dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:autofillHints="password"
             android:inputType="textPassword" />

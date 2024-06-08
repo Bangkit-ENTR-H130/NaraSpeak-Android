@@ -1,5 +1,6 @@
 package com.bangkit.naraspeak.ui.homepage.setting
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,12 +9,19 @@ import android.view.ViewGroup
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.FragmentSettingBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.Transformation
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingBinding? = null
     private val binding get()= _binding!!
+
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -26,6 +34,17 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
+
+        val user = auth.currentUser
+
+
+        binding.tvName.text = user?.displayName
+        Glide.with(requireContext())
+            .load(user?.photoUrl)
+            .apply(RequestOptions())
+            .into(binding.imgPhotoProfile)
 
         binding.cardAbout.apply {
             tvCardSetting.text = "About"
