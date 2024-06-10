@@ -23,7 +23,7 @@ class FirebaseClient {
     private lateinit var auth: FirebaseAuth
 
     fun login(username: String, statusListener: FirebaseStatusListener) {
-        db.child("VideoCalls").child("users").child(username).setValue("").addOnCompleteListener {
+        db.child("video_call").child("users").child(username).setValue("").addOnCompleteListener {
             currentUsername = username
             statusListener.onSuccess()
 
@@ -34,8 +34,8 @@ class FirebaseClient {
         db.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (dataModel.target != null) {
-                    if (snapshot.child("video_calls").child("users").child(dataModel.target).exists()) {
-                        db.child("VideoCalls").child("users").child(dataModel.target).child("video_call_data")
+                    if (snapshot.child("video_call").child("users").child(dataModel.target).exists()) {
+                        db.child("video_call").child("users").child(dataModel.target).child("video_call_data")
                             .setValue(gson.toJson(dataModel))
                     } else {
                         statusListener.onError()
@@ -52,7 +52,7 @@ class FirebaseClient {
 
     fun observeIncomingData(newEventListener: NewEventListener) {
         currentUsername?.let {
-            db.child("video_calls").child("users").child(it).child("video_call_data")
+            db.child("video_call").child("users").child(it).child("video_call_data")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
