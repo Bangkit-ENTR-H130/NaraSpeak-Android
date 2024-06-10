@@ -38,14 +38,15 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
         videoCallRepository = VideoCallRepository.getInstance(firebaseClient)
 
 
-        initiate()
+        initiateVideoCall()
 
 
     }
 
-    private fun initiate() {
-        videoCallRepository.setRemoteView(binding.vcUser2)
+    private fun initiateVideoCall() {
         videoCallRepository.setLocalView(binding.vcUser1)
+        videoCallRepository.setRemoteView(binding.vcUser2)
+
         binding.vcUser1.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
         binding.vcUser2.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
 

@@ -127,8 +127,16 @@ class RegisterActivity : AppCompatActivity() {
 //        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
 //        if (email != null) {
 //        auth.addAuthStateListener {
-            if (!auth.uid.isNullOrBlank()) {
-                Toast.makeText(this@RegisterActivity, "Email has already been registered", Toast.LENGTH_SHORT).show()
+        val email = auth.currentUser?.email
+
+
+        auth.fetchSignInMethodsForEmail(email.toString()).addOnCompleteListener {
+            if (email != null) {
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Email has already been registered",
+                    Toast.LENGTH_SHORT
+                ).show()
 
 
             } else {
@@ -150,6 +158,7 @@ class RegisterActivity : AppCompatActivity() {
 //                    }
 //                }
 //            }
+            }
         }
     }
 

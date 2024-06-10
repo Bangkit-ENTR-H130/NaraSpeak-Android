@@ -13,6 +13,7 @@ import org.webrtc.MediaStream
 import org.webrtc.PeerConnection
 import org.webrtc.SessionDescription
 import org.webrtc.SurfaceViewRenderer
+import javax.inject.Inject
 
 class VideoCallRepository(
     private val firebaseClient: FirebaseClient
@@ -21,7 +22,6 @@ class VideoCallRepository(
     private var currentUsername: String? = null
     private var currentTarget: String? = null
     private var remoteView: SurfaceViewRenderer? = null
-
     private lateinit var webRtcClient: WebRtcClient
 
     var connectionListener: WebRTCConnectionListener? = null
