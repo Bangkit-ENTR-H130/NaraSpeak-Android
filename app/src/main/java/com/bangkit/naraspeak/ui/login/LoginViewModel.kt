@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.bangkit.naraspeak.data.api.response.LoginResponse
+import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.repository.AccountRepository
 import com.bangkit.naraspeak.helper.Result
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class LoginViewModel(private val accountRepository: AccountRepository): ViewModel() {
@@ -24,5 +27,10 @@ class LoginViewModel(private val accountRepository: AccountRepository): ViewMode
             Log.e("PostLogin", e.message.toString())
         }
     }
+
+//    fun getAuth() : LiveData<Result<FirebaseClient>> {
+//        return accountRepository.auth().
+//    }
+
 
 }

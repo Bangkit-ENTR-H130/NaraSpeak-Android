@@ -1,13 +1,17 @@
 package com.bangkit.naraspeak.ui.homepage.setting
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.FragmentSettingBinding
+import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.request.RequestOptions
@@ -19,7 +23,7 @@ import com.google.firebase.ktx.Firebase
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingBinding? = null
-    private val binding get()= _binding!!
+    private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
 
@@ -39,34 +43,45 @@ class SettingFragment : Fragment() {
 
         val user = auth.currentUser
 
+        if (user != null) {
 
-        binding.tvName.text = user?.displayName
-        Glide.with(requireContext())
-            .load(user?.photoUrl)
-            .apply(RequestOptions())
-            .into(binding.imgPhotoProfile)
 
-        binding.cardAbout.apply {
-            tvCardSetting.text = "About"
-            Glide.with(this@SettingFragment)
-                .load(R.drawable.baseline_info_24)
-                .into(imgCardSetting)
+            binding.tvName.text = user.displayName
+            if (user.photoUrl != null) {
+                Glide.with(requireContext())
+                    .load(user.photoUrl)
+                    .apply(RequestOptions())
+                    .into(binding.imgPhotoProfile)
+            }
+
+
+            binding.cardAbout.apply {
+                tvCardSetting.text = "About"
+                Glide.with(this@SettingFragment)
+                    .load(R.drawable.baseline_info_24)
+                    .into(imgCardSetting)
+            }
+
+            binding.cardChangeLanguage.apply {
+                tvCardSetting.text = "Change the language"
+                Glide.with(this@SettingFragment)
+                    .load(R.drawable.baseline_language_24)
+                    .into(imgCardSetting)
+            }
+
+            binding.cardHelp.apply {
+                tvCardSetting.text = "Help"
+                Glide.with(this@SettingFragment)
+                    .load(R.drawable.baseline_live_help_24)
+                    .into(imgCardSetting)
+            }
         }
 
-        binding.cardChangeLanguage.apply {
-            tvCardSetting.text = "Change the language"
-            Glide.with(this@SettingFragment)
-                .load(R.drawable.baseline_language_24)
-                .into(imgCardSetting)
+        binding.btnLogout.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(requireActivity(), LoginActivity::class.java)
+            requireActivity().startActivity(intent)
         }
-
-        binding.cardHelp.apply {
-            tvCardSetting.text = "Help"
-            Glide.with(this@SettingFragment)
-                .load(R.drawable.baseline_live_help_24)
-                .into(imgCardSetting)
-        }
-
 
 
     }

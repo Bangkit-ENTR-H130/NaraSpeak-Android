@@ -6,11 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.ActivityDataFillBinding
+import com.bangkit.naraspeak.helper.ViewModelFactory
 import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.bangkit.naraspeak.ui.register.RegisterActivity
 import com.google.firebase.Firebase
@@ -21,6 +23,8 @@ import com.google.firebase.auth.auth
 class DataFillActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataFillBinding
     private lateinit var auth: FirebaseAuth
+    private val viewModelFactory = ViewModelFactory.getInstance()
+    private val viewModel by viewModels<DataFillViewModel> { viewModelFactory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,6 +35,8 @@ class DataFillActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
 
         auth = Firebase.auth
         val user = auth.currentUser
@@ -64,23 +70,26 @@ class DataFillActivity : AppCompatActivity() {
                         Log.d(TAG, "name: ${user.displayName}")
                         Log.d(TAG, "nameupdate: ${profileUpdate.displayName}")
                     }
+//                viewModel.updateDisplayName(binding.edName.text.toString())
 
                 Log.d(
-                    TAG,binding.spinnerLevel.selectedItem.toString())
+                    TAG, binding.spinnerLevel.selectedItem.toString()
+                )
 
+                val password = binding.edPassword.text.toString()
+                if (password.isNotEmpty()) {
+                    val updatePassword = user.updatePassword(binding.edPassword.text.toString())
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Log.d(TAG, "password updated")
+                            } else {
+                                Log.d(TAG, "password not updated ${it.exception}")
 
-
-
-                val password = user.updatePassword(binding.edPassword.text.toString())
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            Log.d(TAG, "password updated")
-                        } else {
-                            Log.d(TAG, "password not updated ${it.exception}")
-
+                            }
                         }
-                    }
-                Log.d(TAG, "password updated ${password.isSuccessful}")
+                    Log.d(TAG, "password updated ${updatePassword.isSuccessful}")
+                }
+
 
                 val intent = Intent(this@DataFillActivity, HomepageActivity::class.java)
                 startActivity(intent)

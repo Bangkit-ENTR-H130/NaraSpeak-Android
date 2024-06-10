@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.bangkit.naraspeak.data.repository.AccountRepository
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.di.Injection
+import com.bangkit.naraspeak.ui.datafill.DataFillViewModel
 import com.bangkit.naraspeak.ui.login.LoginViewModel
 import com.bangkit.naraspeak.ui.register.RegisterViewModel
 
@@ -20,6 +21,9 @@ class ViewModelFactory(
         }
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             return accountRepository?.let { RegisterViewModel::class.java } as T
+        }
+        if (modelClass.isAssignableFrom(DataFillViewModel::class.java)) {
+            return accountRepository?.let { DataFillViewModel::class.java } as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

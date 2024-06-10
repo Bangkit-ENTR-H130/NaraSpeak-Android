@@ -88,6 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.bangkit.naraspeak.ui.customview.CustomButton
+        android:id="@+id/btn_resend"
         android:layout_width="154dp"
         android:layout_height="40dp"
         android:text="Resend Email"

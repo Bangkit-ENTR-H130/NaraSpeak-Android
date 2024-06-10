@@ -15,16 +15,16 @@ import androidx.core.view.WindowInsetsCompat
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.ui.videocall.VideoCallActivity
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
-import com.bangkit.naraspeak.data.webrtc.FirebaseClient
+import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.databinding.ActivityRegisterBinding
 import com.bangkit.naraspeak.ui.datafill.DataFillActivity
+import com.bangkit.naraspeak.ui.verification.OtpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 
@@ -50,7 +50,7 @@ class RegisterActivity : AppCompatActivity() {
 
         repository = VideoCallRepository.getInstance(firebaseClient)
 
-        testDatabase()
+//        testDatabase()
 
         initializeAuth()
 
@@ -64,8 +64,36 @@ class RegisterActivity : AppCompatActivity() {
 
         }
 
+        binding.btnRegister.setOnClickListener {
+            signUpManually(binding.edEmailRegister.text.toString(), binding.edPasswordRegister.text.toString())
+            Log.d(TAG, "onCreate: $email $password")
+        }
+
+        binding.btnLoginHere.setOnClickListener {
+            Log.d(TAG, "onCreate: $email $password")
+
+        }
 
 
+
+    }
+
+    private fun signUpManually(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Toast.makeText(this, "Verification sent", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@RegisterActivity, OtpActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }?.addOnFailureListener {
+                        Toast.makeText(this@RegisterActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, "signUpManually: ${it.message}")
+                    }
+                }
+            }
     }
 
     private fun initializeAuth() {
@@ -88,10 +116,40 @@ class RegisterActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle: ${account.id}")
-                signUpWithGoogle(account.idToken!!)
+                checkRegisteredEmail(account.idToken!!)
             } catch (e: ApiException) {
                 Log.w(TAG, "Google sign in failed: ${e.message}")
             }
+        }
+    }
+
+    private fun checkRegisteredEmail(idToken: String) {
+//        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
+//        if (email != null) {
+//        auth.addAuthStateListener {
+            if (!auth.uid.isNullOrBlank()) {
+                Toast.makeText(this@RegisterActivity, "Email has already been registered", Toast.LENGTH_SHORT).show()
+
+
+            } else {
+                signUpWithGoogle(idToken)
+
+
+//            }
+//            }
+//            (idToken).addOnCompleteListener {
+//                if (it.isSuccessful) {
+//                    val signInMethods = it.result.signInMethods
+//                    if (!signInMethods.isNullOrEmpty()) {
+//                        signInWithGoogle(idToken)
+//                        Log.d(TAG, "Login success")
+//                    } else {
+//                        Toast.makeText(this, "Email is not registered.", Toast.LENGTH_SHORT).show()
+//                        Log.d(TAG, "Login failed")
+//
+//                    }
+//                }
+//            }
         }
     }
 

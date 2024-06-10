@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
-import com.bangkit.naraspeak.data.webrtc.FirebaseClient
+import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.webrtc.PeerConnectionObserver
 import com.bangkit.naraspeak.data.webrtc.WebRtcClient
 import com.google.gson.Gson

@@ -55,11 +55,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.tvDisplayName.text = user?.displayName
-        Glide.with(requireContext())
-            .load(user?.photoUrl)
-            .into(binding.ivProfilePicture)
+        if (user?.photoUrl != null) {
+            Glide.with(requireContext())
+                .load(user.photoUrl)
+                .into(binding.ivProfilePicture)
+        }
+
     }
 
+    
 
 
 }

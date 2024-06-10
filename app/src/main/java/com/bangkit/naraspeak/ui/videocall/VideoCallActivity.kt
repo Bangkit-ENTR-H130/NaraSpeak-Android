@@ -12,7 +12,7 @@ import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
-import com.bangkit.naraspeak.data.webrtc.FirebaseClient
+import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.databinding.ActivityVideoCallBinding
 import org.webrtc.RendererCommon
 
