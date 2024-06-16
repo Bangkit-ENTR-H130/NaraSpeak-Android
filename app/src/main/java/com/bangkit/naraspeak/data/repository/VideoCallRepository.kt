@@ -2,6 +2,7 @@ package com.bangkit.naraspeak.data.repository
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
@@ -97,10 +98,9 @@ class VideoCallRepository(
     fun sendCallRequest(username: String, statusListener: FirebaseClient.FirebaseStatusListener) {
         firebaseClient.sendData(
             DataModel(
-                target = username,
                 sender = currentUsername,
                 data = null,
-                DataModelType.StartCall
+                dataModelType = DataModelType.StartCall
             ), statusListener
         )
     }
@@ -181,6 +181,10 @@ class VideoCallRepository(
 
     fun disconnect() {
         webRtcClient.disconnect()
+    }
+
+    fun findMatch() {
+//        firebaseClient.sendData()
     }
 
     interface WebRTCConnectionListener {

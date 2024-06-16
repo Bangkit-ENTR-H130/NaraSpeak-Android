@@ -108,7 +108,7 @@ class HomepageActivity : AppCompatActivity() {
 
 
             repository.login(
-                auth.currentUser?.displayName.toString(),
+                auth.currentUser?.uid.toString(),
                 object : FirebaseClient.FirebaseStatusListener {
                     override fun onError() {
                         Toast.makeText(

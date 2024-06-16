@@ -7,6 +7,7 @@ import com.bangkit.naraspeak.data.repository.AccountRepository
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.di.Injection
 import com.bangkit.naraspeak.ui.datafill.DataFillViewModel
+import com.bangkit.naraspeak.ui.homepage.setting.SettingViewModel
 import com.bangkit.naraspeak.ui.login.LoginViewModel
 import com.bangkit.naraspeak.ui.register.RegisterViewModel
 
@@ -20,10 +21,13 @@ class ViewModelFactory(
             return accountRepository?.let { LoginViewModel(it) } as T
         }
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return accountRepository?.let { RegisterViewModel::class.java } as T
+            return accountRepository?.let { RegisterViewModel(it) } as T
         }
         if (modelClass.isAssignableFrom(DataFillViewModel::class.java)) {
-            return accountRepository?.let { DataFillViewModel::class.java } as T
+            return accountRepository?.let { DataFillViewModel(it) } as T
+        }
+        if (modelClass.isAssignableFrom(SettingViewModel::class.java)) {
+            return accountRepository?.let { SettingViewModel(it) } as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

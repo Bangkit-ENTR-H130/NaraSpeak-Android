@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.bangkit.naraspeak.data.api.retrofit.ApiService
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
+import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.helper.Result
+import com.bangkit.naraspeak.helper.UserResult
+import com.google.firebase.database.ValueEventListener
 
 class AccountRepository(
     private val apiService: ApiService,
@@ -28,6 +31,19 @@ class AccountRepository(
             Log.e("UpdateName", "${e.message}")
         }
 
+    }
+
+    fun postAuthToDatabase(username: String, userModel: UserModel) {
+        firebaseClient.postAuthToDatabase(username, userModel)
+    }
+
+    fun updateAuthData(username: String, newDataListener: FirebaseClient.UpdateDataListener) {
+        firebaseClient.updateAuthData(username, object : FirebaseClient.UpdateDataListener {
+            override fun onUpdate(userModel: UserModel) {
+                newDataListener.onUpdate(userModel)
+            }
+
+        })
     }
 
 

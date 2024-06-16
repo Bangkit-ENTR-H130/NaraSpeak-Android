@@ -9,14 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bangkit.naraspeak.R
+import com.bangkit.naraspeak.data.firebase.FirebaseClient
+import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.databinding.FragmentSettingBinding
+import com.bangkit.naraspeak.helper.ViewModelFactory
 import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 
@@ -26,6 +32,12 @@ class SettingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+
+    private val viewModelFactory = ViewModelFactory.getInstance()
+    private val viewModel by viewModels<SettingViewModel> { viewModelFactory }
+    val db = FirebaseDatabase.getInstance()
+
+
 
 
     override fun onCreateView(
@@ -81,6 +93,27 @@ class SettingFragment : Fragment() {
             auth.signOut()
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             requireActivity().startActivity(intent)
+            requireActivity().finish()
+        }
+
+        binding.cardChangeProfile.root.setOnClickListener {
+            binding.cardSetProfile.root.visibility = View.VISIBLE
+            binding.cardSetProfile.btnConfirm.setOnClickListener {
+                viewModel.updateData(auth.currentUser?.displayName.toString(),
+                    object : FirebaseClient.UpdateDataListener {
+                        override fun onUpdate(userModel: UserModel) {
+                            
+                            userModel.name = binding.cardSetProfile.edName.text.toString()
+                            userModel.gender = "Female"
+                            userModel.level = binding.cardSetProfile.level.text.toString()
+
+                        }
+
+                    })
+                binding.cardSetProfile.root.visibility = View.GONE
+
+            }
+
         }
 
 

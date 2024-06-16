@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bangkit.naraspeak.R
+import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.databinding.ActivityDataFillBinding
 import com.bangkit.naraspeak.helper.ViewModelFactory
 import com.bangkit.naraspeak.ui.homepage.HomepageActivity
@@ -70,7 +71,7 @@ class DataFillActivity : AppCompatActivity() {
                         Log.d(TAG, "name: ${user.displayName}")
                         Log.d(TAG, "nameupdate: ${profileUpdate.displayName}")
                     }
-//                viewModel.updateDisplayName(binding.edName.text.toString())
+//                viewModel.updateName(binding.edName.text.toString())
 
                 Log.d(
                     TAG, binding.spinnerLevel.selectedItem.toString()
@@ -89,6 +90,30 @@ class DataFillActivity : AppCompatActivity() {
                         }
                     Log.d(TAG, "password updated ${updatePassword.isSuccessful}")
                 }
+                val gender = when ( binding.rgGender.checkedRadioButtonId) {
+                    binding.rbBtnMale.id -> {
+                        "Male"
+                    }
+                    binding.rbBtnFemale.id -> {
+                        "Female"
+                    }
+
+                    else -> {
+                        "Not set yet"
+                    }
+                }
+                binding
+                val userModel = UserModel(
+                    user.uid,
+                    binding.edName.text.toString(),
+                    binding.spinnerLevel.selectedItem.toString(),
+                    gender,
+                )
+
+
+                viewModel.postAuthToDatabase(binding.edName.text.toString(), userModel)
+
+                user.reload()
 
 
                 val intent = Intent(this@DataFillActivity, HomepageActivity::class.java)

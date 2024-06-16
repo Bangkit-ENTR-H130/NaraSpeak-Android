@@ -1,7 +1,7 @@
 package com.bangkit.naraspeak.data.model
 
 data class DataModel(
-    val target: String? = null,
+    var target: String? = null,
     val sender: String? = null,
     val data: String? = null,
     val dataModelType: DataModelType? = null

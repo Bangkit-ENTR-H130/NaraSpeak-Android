@@ -133,61 +133,72 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle: ${account.id}")
 
-                checkRegisteredEmail(account.idToken!!)
+                signInWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 Log.w(TAG, "Google sign in failed: ${e.message}")
             }
         }
     }
 
-    private fun checkRegisteredEmail(idToken: String) {
-//        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
-//        if (email != null) {
-        val email = auth.currentUser?.email
-        auth.fetchSignInMethodsForEmail(email.toString()).addOnCompleteListener {
-            if (email == null) {
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Email has not been registered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                signInWithGoogle(idToken)
-                Log.d(TAG, "login success ${it.isSuccessful}")
-            }
-
-        }.addOnFailureListener {
-            Log.d(TAG, "failure check email : ${it.message}")
-        }
-
-
-//            }
-//            (idToken).addOnCompleteListener {
-//                if (it.isSuccessful) {
-//                    val signInMethods = it.result.signInMethods
-//                    if (!signInMethods.isNullOrEmpty()) {
-//                        signInWithGoogle(idToken)
-//                        Log.d(TAG, "Login success")
-//                    } else {
-//                        Toast.makeText(this, "Email is not registered.", Toast.LENGTH_SHORT).show()
-//                        Log.d(TAG, "Login failed")
+//    private fun checkRegisteredEmail(idToken: String, email: String) {
+////        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
+////        if (email != null) {
+////        val email = auth.currentUser?.email
+//        Log.d(TAG, "checkregisteredEmail $email")
+//        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener {
+//            if (it.isSuccessful) {
+//                val signingMethods = it.result.signInMethods
+//                Log.d(TAG, signingMethods.toString())
 //
-//                    }
-//                }
+//                    Toast.makeText(
+//                        this@LoginActivity,
+//                        "Email has not been registered",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                signInWithGoogle(idToken)
+//
+//            } else {
+//                signInWithGoogle(idToken)
+//                Log.d(TAG, "login success ${it.isSuccessful}")
 //            }
+//
+//        }.addOnFailureListener {
+//            Log.d(TAG, "failure check email : ${it.message}")
 //        }
-    }
+//
+//
+////            }
+////            (idToken).addOnCompleteListener {
+////                if (it.isSuccessful) {
+////                    val signInMethods = it.result.signInMethods
+////                    if (!signInMethods.isNullOrEmpty()) {
+////                        signInWithGoogle(idToken)
+////                        Log.d(TAG, "Login success")
+////                    } else {
+////                        Toast.makeText(this, "Email is not registered.", Toast.LENGTH_SHORT).show()
+////                        Log.d(TAG, "Login failed")
+////
+////                    }
+////                }
+////            }
+////        }
+//    }
 
     private fun signInWithGoogle(idToken: String?) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener {
 
-
                 if (it.isSuccessful) {
-                    Log.d(TAG, "signInWithCredential::success")
-                    startActivity(Intent(this@LoginActivity, HomepageActivity::class.java))
-                    Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "is newuser: ${it.result.additionalUserInfo?.isNewUser}")
+                    if (!it.result.additionalUserInfo?.isNewUser!!) {
+                        Log.d(TAG, "signInWithCredential::success")
+                        startActivity(Intent(this@LoginActivity, HomepageActivity::class.java))
+                        Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Email has not registered yet", Toast.LENGTH_SHORT).show()
+                    }
+
                 } else {
                     Log.d(TAG, "signInWithCredential: ${it.exception}")
 

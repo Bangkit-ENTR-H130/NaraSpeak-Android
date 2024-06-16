@@ -56,6 +56,7 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
         videoCallRepository.connectionListener = this
 
         binding.callBtn.setOnClickListener {
+            videoCallRepository.findMatch()
             videoCallRepository.sendCallRequest(
                 binding.targetUserNameEt.text.toString(),
                 object : FirebaseClient.FirebaseStatusListener {
@@ -69,6 +70,46 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
                     }
 
                     override fun onSuccess() {
+                        videoCallRepository.detectCallRequest(object : FirebaseClient.NewEventListener {
+                            override fun onNewEvent(dataModel: DataModel) {
+                                if (dataModel.dataModelType == DataModelType.StartCall) {
+                                    runOnUiThread {
+                                        binding.incomingNameTV.text = dataModel.sender + " is Calling you"
+                                        binding.incomingCallLayout.visibility = View.VISIBLE
+
+                                        binding.acceptButton.setOnClickListener {
+                                            //receive the call
+//                        videoCallRepository.st(dataModel.sender.toString())
+                                            Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
+                                            videoCallRepository.startCall(dataModel.sender.toString())
+
+                                            binding.incomingCallLayout.visibility = View.GONE
+                                            binding.whoToCallLayout.visibility = View.GONE
+
+                                        }
+                                        binding.rejectButton.setOnClickListener {
+                                            binding.incomingCallLayout.visibility = View.GONE
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        })
+                        binding.cardOverlayCall.btnCameraSwitch.setOnClickListener {
+                            videoCallRepository.switchCamera()
+                        }
+
+                        binding.cardOverlayCall.btnHungUp.setOnClickListener {
+                            videoCallRepository.disconnect()
+                            finish()
+                        }
+
+                        binding.cardOverlayCall.btnMute.setOnClickListener {
+                            videoCallRepository.muteMicrophone(isMuted)
+                            isMuted = !isMuted
+                        }
+
                     }
 
                 })

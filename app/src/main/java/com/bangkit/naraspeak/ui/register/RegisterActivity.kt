@@ -18,6 +18,7 @@ import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.databinding.ActivityRegisterBinding
 import com.bangkit.naraspeak.ui.datafill.DataFillActivity
+import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bangkit.naraspeak.ui.verification.OtpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -116,62 +117,69 @@ class RegisterActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d(TAG, "firebaseAuthWithGoogle: ${account.id}")
-                checkRegisteredEmail(account.idToken!!)
+                signUpWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 Log.w(TAG, "Google sign in failed: ${e.message}")
             }
         }
     }
 
-    private fun checkRegisteredEmail(idToken: String) {
-//        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
-//        if (email != null) {
-//        auth.addAuthStateListener {
-        val email = auth.currentUser?.email
-
-
-        auth.fetchSignInMethodsForEmail(email.toString()).addOnCompleteListener {
-            if (email != null) {
-                Toast.makeText(
-                    this@RegisterActivity,
-                    "Email has already been registered",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-
-            } else {
-                signUpWithGoogle(idToken)
-
-
-//            }
-//            }
-//            (idToken).addOnCompleteListener {
-//                if (it.isSuccessful) {
-//                    val signInMethods = it.result.signInMethods
-//                    if (!signInMethods.isNullOrEmpty()) {
-//                        signInWithGoogle(idToken)
-//                        Log.d(TAG, "Login success")
-//                    } else {
-//                        Toast.makeText(this, "Email is not registered.", Toast.LENGTH_SHORT).show()
-//                        Log.d(TAG, "Login failed")
+//    private fun checkRegisteredEmail(idToken: String) {
+////        val email = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)?.email
+////        if (email != null) {
+////        auth.addAuthStateListener {
+//        val email = auth.currentUser?.email
 //
-//                    }
-//                }
+//
+//        auth.fetchSignInMethodsForEmail(email.toString()).addOnCompleteListener {
+//            if (email != null) {
+//                Toast.makeText(
+//                    this@RegisterActivity,
+//                    "Email has already been registered",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//
+//
+//            } else {
+//                signUpWithGoogle(idToken)
+//
+//
+////            }
+////            }
+////            (idToken).addOnCompleteListener {
+////                if (it.isSuccessful) {
+////                    val signInMethods = it.result.signInMethods
+////                    if (!signInMethods.isNullOrEmpty()) {
+////                        signInWithGoogle(idToken)
+////                        Log.d(TAG, "Login success")
+////                    } else {
+////                        Toast.makeText(this, "Email is not registered.", Toast.LENGTH_SHORT).show()
+////                        Log.d(TAG, "Login failed")
+////
+////                    }
+////                }
+////            }
 //            }
-            }
-        }
-    }
+//        }
+//    }
+
+
 
     private fun signUpWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    Log.d(TAG, "signInWithCredential:success")
-                    val intent = Intent(this@RegisterActivity, DataFillActivity::class.java)
-                    intent.putExtra(SIGN_UP_GOOGLE, "with_google_sign_up")
-                    startActivity(intent)
-                    finish()
+                    if (it.result.additionalUserInfo?.isNewUser == true) {
+                        Log.d(TAG, "signInWithCredential:success")
+                        val intent = Intent(this@RegisterActivity, DataFillActivity::class.java)
+                        intent.putExtra(SIGN_UP_GOOGLE, "with_google_sign_up")
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this@RegisterActivity,"Email has already been registered", Toast.LENGTH_SHORT).show()
+                    }
+
 
                 } else {
                     Log.w(TAG, "signInWithCredential: ${it.exception}")
