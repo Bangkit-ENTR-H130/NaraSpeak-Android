@@ -21,7 +21,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.childEvents
 import com.google.firebase.database.snapshots
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import java.util.Objects
+import java.util.UUID
 
 class FirebaseClient {
     private val gson = Gson()
@@ -38,7 +40,7 @@ class FirebaseClient {
     private var status: String = "waiting"
 
     fun login(username: String, statusListener: FirebaseStatusListener) {
-        db.child("video_call").push().child(username).setValue("").addOnCompleteListener {
+        db.child("login").push().child(username).setValue("").addOnCompleteListener {
             currentUsername = username
             statusListener.onSuccess()
 
@@ -46,29 +48,56 @@ class FirebaseClient {
     }
 
     fun sendData(dataModel: DataModel, statusListener: FirebaseStatusListener) {
-        val dbVideoCall = db.child("video_call")
-        dbVideoCall.addListenerForSingleValueEvent(object : ValueEventListener {
+        db.child("video_call").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!isOpponentMatched) {
                     var isMatchFound = false
 
-                    snapshot.children.forEach {
-                        if (it.childrenCount.toInt() == 2) {
-                            db.child("video_call").child(it.key!!).child("video_call_data")
-                                .setValue(gson.toJson(dataModel))
-                            isMatchFound = true
-                        } else if (it.childrenCount.toInt() < 2) {
-                            db.child("video_call").child(it.key!!).child(currentUsername.toString())
-                                .child("video_call_data")
-                                .setValue(gson.toJson(dataModel))
-                            isMatchFound = false
-                        }
+//                    snapshot.children.forEach { roomSnapshot ->
+//                        Log.d(TAG, "Checking room: ${roomSnapshot.key}, user count: ${roomSnapshot.childrenCount}")
+//
+//                        // Check if the room has exactly one user (available for matching)
+//                        if (roomSnapshot.childrenCount == 1L) {
+//                            val otherUser = roomSnapshot.children.firstOrNull { it.key != currentUsername }
+//
+//                            if (otherUser != null) {
+//                                db.child("video_call").child(roomSnapshot.key!!)
+//                                    .child(currentUsername!!)
+//                                    .setValue(gson.toJson(dataModel))
+//
+//                                dataModel.target = otherUser.key
+//                                isMatchFound = true
+//                                statusListener.onSuccess()
+//                            }
+//                        }
+//                    }
+                    snapshot.children.firstOrNull { roomSnapshot ->
+                        roomSnapshot.childrenCount == 1L
+
+                    }?.let { availableRoom ->
+                        val otherUser = availableRoom.children.firstOrNull { it.key != currentUsername }
+
+                            db.child("video_call").child(availableRoom.key!!)
+                                .child(currentUsername!!)
+                                .setValue(gson.toJson(dataModel)).addOnCompleteListener {
+                                    dataModel.target = otherUser?.key
+                                    isMatchFound = true
+                                    statusListener.onSuccess()
+                                }
+
+//                            dataModel.target = otherUser?.key
+//                            isMatchFound = true
+//                            statusListener.onSuccess()
+
                     }
 
                     if (!isMatchFound) {
-                        db.child("video_call").push().child(currentUsername.toString())
-                            .child("video_call_data")
+                        val newRoomKey = "room_${UUID.randomUUID()}"
+                        db.child("video_call").child(newRoomKey)
+                            .child(currentUsername!!)
                             .setValue(gson.toJson(dataModel))
+                        dataModel.target = snapshot.children.firstOrNull {it.key != currentUsername}.toString()
+                        statusListener.onSuccess()
                     }
                 }
             }
@@ -80,34 +109,60 @@ class FirebaseClient {
         })
     }
 
+
     fun observeIncomingData(newEventListener: NewEventListener) {
-        currentUsername?.let {
-            db.child("video_call").orderByChild(it).addChildEventListener(object :
-                ChildEventListener {
+        currentUsername?.let { username ->
+            db.child("video_call").addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val data = snapshot.child("video_call_data").getValue(String::class.java)
-                    if (data != null) {
-                        val dataModel = gson.fromJson(data, DataModel::class.java)
-                        newEventListener.onNewEvent(dataModel)
-                    }
+                    handleSnapshot(snapshot, username, newEventListener)
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    val data = snapshot.child("video_call_data").getValue(String::class.java)
-                    if (data != null) {
-                        val dataModel = gson.fromJson(data, DataModel::class.java)
-                        newEventListener.onNewEvent(dataModel)
+                    handleSnapshot(snapshot, username, newEventListener)
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    // Handle if necessary, e.g., notify user that their opponent left
+                    if (snapshot.key == username) {
+                        Log.d("IncomingData", "The user has left the room: $username")
                     }
                 }
 
-                override fun onChildRemoved(snapshot: DataSnapshot) {}
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("IncomingData", "onCancelled: ${error.message}, ${error.details}")
                 }
             })
         }
     }
+
+    private fun handleSnapshot(
+        snapshot: DataSnapshot,
+        username: String,
+        newEventListener: NewEventListener
+    ) {
+        if (snapshot.exists() && snapshot.childrenCount == 2L) {
+            snapshot.children.firstOrNull { userSnapshot ->
+                if (userSnapshot.key != username) {
+                        val json = Objects.requireNonNull(userSnapshot.value).toString() // Convert snapshot value to string
+                        Log.d(TAG, "json $json")
+
+                        try {
+                            val dataModel = gson.fromJson(json, DataModel::class.java)
+                            newEventListener.onNewEvent(dataModel)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "error ${e.message}")
+                        }
+
+
+                }
+                true
+
+            }
+        }
+    }
+
 
     fun updateDisplayName(displayName: String) {
         auth = Firebase.auth
