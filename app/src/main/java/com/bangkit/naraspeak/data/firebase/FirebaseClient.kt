@@ -1,8 +1,6 @@
 package com.bangkit.naraspeak.data.firebase
 
 import android.util.Log
-import android.view.View
-import androidx.core.graphics.component2
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.UserModel
 import com.google.firebase.Firebase
@@ -19,9 +17,8 @@ import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.childEvents
-import com.google.firebase.database.snapshots
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import kotlinx.coroutines.flow.firstOrNull
 import java.util.Objects
 import java.util.UUID
 
@@ -92,8 +89,7 @@ class FirebaseClient {
                     }
 
                     if (!isMatchFound) {
-                        val newRoomKey = "room_${UUID.randomUUID()}"
-                        db.child("video_call").child(newRoomKey)
+                        db.child("video_call").child(NEW_ROOM_KEY)
                             .child(currentUsername!!)
                             .setValue(gson.toJson(dataModel))
                         dataModel.target = snapshot.children.firstOrNull {it.key != currentUsername}.toString()
@@ -114,7 +110,6 @@ class FirebaseClient {
         currentUsername?.let { username ->
             db.child("video_call").addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    handleSnapshot(snapshot, username, newEventListener)
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -126,14 +121,17 @@ class FirebaseClient {
                     if (snapshot.key == username) {
                         Log.d("IncomingData", "The user has left the room: $username")
                     }
+                    snapshot.child(NEW_ROOM_KEY).ref.removeValue()
                 }
 
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("IncomingData", "onCancelled: ${error.message}, ${error.details}")
+                    db.child("video_call").removeValue()
                 }
             })
+
         }
     }
 
@@ -143,7 +141,7 @@ class FirebaseClient {
         newEventListener: NewEventListener
     ) {
         if (snapshot.exists() && snapshot.childrenCount == 2L) {
-            snapshot.children.firstOrNull { userSnapshot ->
+            snapshot.children.forEach { userSnapshot ->
                 if (userSnapshot.key != username) {
                         val json = Objects.requireNonNull(userSnapshot.value).toString() // Convert snapshot value to string
                         Log.d(TAG, "json $json")
@@ -154,10 +152,8 @@ class FirebaseClient {
                         } catch (e: Exception) {
                             Log.e(TAG, "error ${e.message}")
                         }
-
-
                 }
-                true
+
 
             }
         }
@@ -368,6 +364,8 @@ class FirebaseClient {
     companion object {
         private val TAG = FirebaseClient::class.java.simpleName
         private const val NOT_FOUND = "none"
+        private val NEW_ROOM_KEY = "room_${UUID.randomUUID()}"
+
 
     }
 }
