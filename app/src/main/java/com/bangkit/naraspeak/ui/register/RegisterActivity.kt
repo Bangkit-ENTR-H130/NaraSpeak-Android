@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +19,7 @@ import com.bangkit.naraspeak.ui.videocall.VideoCallActivity
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.databinding.ActivityRegisterBinding
+import com.bangkit.naraspeak.helper.isValidEmail
 import com.bangkit.naraspeak.ui.datafill.DataFillActivity
 import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bangkit.naraspeak.ui.verification.OtpActivity
@@ -59,6 +62,12 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.edPasswordRegister.text.toString()
         val confirmPassword = binding.edConfirmPassword.text.toString()
 
+        binding.btnRegister.isEnabled = false
+        binding.edPasswordRegister.addTextChangedListener(textWatcher)
+        binding.edPasswordRegister.addTextChangedListener(textWatcher)
+        binding.edConfirmPassword.addTextChangedListener(textWatcher)
+
+
         binding.btnRegisterGoogle.setOnClickListener {
             googleSignUpLauncher.launch(googleSignIn.signInIntent)
             Log.d("user", "${auth.currentUser?.displayName}")
@@ -79,6 +88,18 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val email = binding.edEmailRegister.text.toString().trim()
+            val password = binding.edPasswordRegister.text.toString().trim()
+            val confirmPassword = binding.edConfirmPassword.text.toString().trim()
+            binding.btnRegister.isEnabled = isValidEmail(email) && password.length >= 8 && confirmPassword != password
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    }
     private fun signUpManually(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {

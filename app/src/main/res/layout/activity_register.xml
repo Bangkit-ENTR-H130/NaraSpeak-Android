@@ -227,6 +227,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Already have an account?"
+        style="@style/TextStyle.Caption"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline3"/>
 
@@ -235,7 +236,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Register here"
+        android:text="Login here"
+        style="@style/TextStyle.Caption.Bold"
         android:textColor="@color/primary_10"
         app:layout_constraintBottom_toBottomOf="@id/tv_account_confirm"
         app:layout_constraintStart_toEndOf="@+id/tv_account_confirm"
