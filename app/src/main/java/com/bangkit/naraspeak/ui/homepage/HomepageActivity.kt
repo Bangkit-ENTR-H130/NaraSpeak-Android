@@ -107,6 +107,11 @@ class HomepageActivity : AppCompatActivity() {
 //            }
 
 
+
+
+
+
+
             repository.login(
                 auth.currentUser?.uid.toString(),
                 object : FirebaseClient.FirebaseStatusListener {
@@ -120,12 +125,27 @@ class HomepageActivity : AppCompatActivity() {
 
                     override fun onSuccess() {
                         Log.d("USERSUCCESS", auth.currentUser?.displayName.toString())
+                        repository.sendCallRequest(
+                            object : FirebaseClient.FirebaseStatusListener {
+                                override fun onError() {
+                                    Toast.makeText(
+                                        this@HomepageActivity,
+                                        "Couldnt make the call",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                }
+
+                                override fun onSuccess() {
+
+                                }
+                            })
                         getPermission()
                     }
                 },
                 this@HomepageActivity
             )
-
+//
         }
         Log.d("username", auth.currentUser?.displayName.toString())
 

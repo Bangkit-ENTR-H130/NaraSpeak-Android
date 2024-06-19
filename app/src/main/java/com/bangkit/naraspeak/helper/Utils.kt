@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 
 private val date = SimpleDateFormat("yyyyMMMdd", Locale.getDefault()).format(Date())
 private const val PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\\\d)(?=.*[$@$!%*#?&])[A-Za-z\\\\d$@$!%*#?&]{8,}$"
+
 fun isValidEmail(email: String): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }

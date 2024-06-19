@@ -10,10 +10,11 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/frame_121"
+        android:layout_height="492dp"
+        android:background="@drawable/frame_121"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:layout_width="wrap_content"

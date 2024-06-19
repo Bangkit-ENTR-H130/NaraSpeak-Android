@@ -8,6 +8,8 @@
     android:background="@color/primary_1"
     tools:context=".ui.videocall.VideoCallActivity">
 
+
+
     <RelativeLayout
         android:id="@+id/call_layout"
         android:layout_width="match_parent"
@@ -21,20 +23,20 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
 
-    <org.webrtc.SurfaceViewRenderer
-        android:id="@+id/vc_user_2"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="445dp" />
-
-<!--    <androidx.constraintlayout.widget.Guideline-->
+        <!--    <androidx.constraintlayout.widget.Guideline-->
 <!--        android:id="@+id/guideline6"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        android:orientation="horizontal"-->
 <!--        app:layout_constraintGuide_percent="0.5" />-->
 
-    <org.webrtc.SurfaceViewRenderer
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/vc_user_2"
+            android:layout_width="wrap_content"
+            android:layout_height="445dp"
+            android:layout_weight="1" />
+
+        <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_1"
         android:layout_width="match_parent"
         android:layout_height="445dp"
@@ -46,11 +48,13 @@
 
 
     <com.bangkit.naraspeak.ui.customview.CustomButton
+        android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:backgroundTint="@color/secondary_6"
         android:text="01:59"
         style="@style/TextStyle.Title"
+        android:visibility="gone"
         android:alpha="0.5"
         android:padding="8dp"
         android:layout_marginTop="32dp"
@@ -64,6 +68,7 @@
         android:layout_height="wrap_content"
         android:text="Recommended Topic : What do you think about climate change"
         android:textAllCaps="false"
+        android:visibility="gone"
         style="@style/TextStyle.Body.Bold"
         android:backgroundTint="@color/secondary_6"
         android:alpha="0.7"
@@ -80,6 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         layout="@layout/card_call"
+        android:visibility="gone"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -149,9 +155,35 @@
             android:id="@+id/callBtn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-
             android:layout_below="@id/targetUserNameEt"
             android:layout_marginHorizontal="30dp"
             android:text="call" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+        <com.bangkit.naraspeak.ui.customview.CustomButton
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:text="Retry"
+            android:layout_marginTop="32dp"
+            android:layout_below="@id/progress_bar"/>
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

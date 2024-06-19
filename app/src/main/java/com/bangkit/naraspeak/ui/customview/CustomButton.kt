@@ -26,6 +26,8 @@ class CustomButton @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         background = button
+
+
         setTextColor(textColor)
 
         isAllCaps = false

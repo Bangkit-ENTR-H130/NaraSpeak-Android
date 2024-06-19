@@ -99,7 +99,7 @@ class VideoCallRepository(
         })
     }
 
-    fun sendCallRequest(username: String, statusListener: FirebaseClient.FirebaseStatusListener) {
+    fun sendCallRequest( statusListener: FirebaseClient.FirebaseStatusListener) {
         firebaseClient.sendData(
             DataModel(
                 sender = currentUsername,
@@ -169,8 +169,8 @@ class VideoCallRepository(
 
     fun startCall(target: String, context: Context) {
         webRtcClient.call(target)
-        webRtcClient.socketConnect()
-        webRtcClient.startRecordAudio(context)
+//        webRtcClient.socketConnect()
+//        webRtcClient.startRecordAudio(context)
     }
 
     fun switchCamera() {
@@ -187,8 +187,8 @@ class VideoCallRepository(
 
     fun disconnect() {
         webRtcClient.disconnect()
-        webRtcClient.stopRecordAudio()
-        webRtcClient.socketDisconnect()
+//        webRtcClient.stopRecordAudio()
+//        webRtcClient.socketDisconnect()
     }
 
     fun findMatch() {

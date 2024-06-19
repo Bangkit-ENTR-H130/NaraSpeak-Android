@@ -1,6 +1,5 @@
 package com.bangkit.naraspeak.ui.verification
 
-import android.os.CountDownTimer
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,38 +8,40 @@ import java.util.Timer
 import java.util.TimerTask
 
 class OtpViewModel: ViewModel() {
+    companion object {
+        private const val ONE_SEC = 1000
+        private const val INITIAL_TIME = 60 // initial time in seconds
+    }
 
-    private val _remainingTime = MutableLiveData<Long>()
-    val remainingTime: LiveData<Long> get() = _remainingTime
-
-    private val _isResetTimer = MutableLiveData<Boolean>()
-    val isResetTimer: LiveData<Boolean> get() = _isResetTimer
-
+    private val mElapsedTime = MutableLiveData<Long?>()
+    private var timer: Timer? = null
 
     init {
-        timer()
-
-
+        resetTimer()
     }
 
-    fun timer() {
-        _isResetTimer.value = true
-        _remainingTime.value = ONE_MINUTE
-        object : CountDownTimer(ONE_SECOND, ONE_SECOND) {
-            override fun onTick(millisUntilFinished: Long) {
-                _remainingTime.value = ONE_MINUTE - millisUntilFinished
+    private fun startTimer() {
+        timer = Timer()
+        timer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                val currentValue = mElapsedTime.value ?: INITIAL_TIME.toLong()
+                if (currentValue > 0) {
+                    val newValue = currentValue - 1
+                    mElapsedTime.postValue(newValue)
+                } else {
+                    timer?.cancel()
+                }
             }
-
-            override fun onFinish() {
-                _remainingTime.value = 0
-            }
-
-        }
+        }, ONE_SEC.toLong(), ONE_SEC.toLong())
     }
 
+    fun resetTimer() {
+        mElapsedTime.postValue(INITIAL_TIME.toLong())
+        timer?.cancel()
+        startTimer()
+    }
 
-    companion object {
-        const val ONE_SECOND = 1000L
-        const val ONE_MINUTE = ONE_SECOND * 60
+    fun getElapsedTime(): LiveData<Long?> {
+        return mElapsedTime
     }
 }

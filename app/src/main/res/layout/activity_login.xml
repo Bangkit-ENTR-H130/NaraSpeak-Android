@@ -33,9 +33,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_bold"
+        style="@style/TextStyle.Headline3.Bold"
         android:text="Please Input Your E-mail and Password"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo" />
@@ -47,8 +46,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins"
+        style="@style/TextStyle.Body"
         android:text="Login to your account"
-        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -60,8 +59,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="E-mail"
+        style="@style/TextStyle.Body"
         android:textColor="@color/primary_10"
-        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
 
@@ -70,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        app:boxBackgroundMode="none"
+        app:boxBackgroundMode="outline"
         app:boxStrokeWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +95,7 @@
         android:layout_marginTop="16dp"
         android:text="Password"
         android:textColor="@color/primary_10"
-        android:textSize="12sp"
+        style="@style/TextStyle.Body"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_email" />
 
@@ -105,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        app:boxBackgroundMode="none"
+        app:boxBackgroundMode="outline"
         app:boxStrokeWidth="0dp"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/primary_10"
@@ -132,7 +131,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Forget Password?"
-        android:textSize="10sp"
+        style="@style/TextStyle.Caption"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_password" />
 
@@ -166,7 +165,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/primary_10"
         android:text="or"
+        style="@style/TextStyle.Caption"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />

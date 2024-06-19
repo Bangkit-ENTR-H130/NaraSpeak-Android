@@ -38,22 +38,31 @@ class OtpActivity : AppCompatActivity() {
 
         checkVerification(user)
 
-        binding.btnResend.setOnClickListener {
+
+        binding.btnResend.isEnabled = false
+
+        viewModel.getElapsedTime().observe(this) { second ->
+            binding.tvTimer.text = "$second Seconds left"
+            if (second == 0L) {
+                binding.btnResend.isEnabled = true
+            }
+            binding.btnResend.setOnClickListener {
+                user?.sendEmailVerification()?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(this, "Verification sent", Toast.LENGTH_SHORT).show()
+                        viewModel.resetTimer()
+                        binding.btnResend.isEnabled = false
+
+                    }
+                }
+            }
+
+
+            }
+        binding.btnConfirm.setOnClickListener {
             checkVerification(user)
         }
 
-
-        viewModel.remainingTime.observe(this) {
-//            binding.btnResend.isEnabled = false
-            binding.tvTimer.text = it.toString()
-
-
-
-            if (it == 0L) {
-//                binding.btnResend.isEnabled = true
-
-            }
-        }
     }
 
     private fun checkVerification(user: FirebaseUser?) {

@@ -23,7 +23,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             app:menu="@menu/home_menu">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -93,7 +93,7 @@
         android:id="@+id/tv_start_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lorem ipsum dolor sit amet consectetur."
+        android:text="Start to improve your grammar"
         style="@style/TextStyle.Caption"
         android:textAlignment="center"
         android:layout_marginTop="4dp"

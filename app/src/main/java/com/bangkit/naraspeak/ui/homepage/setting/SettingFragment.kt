@@ -67,12 +67,12 @@ class SettingFragment : Fragment() {
             }
 
 
-            binding.cardAbout.apply {
-                tvCardSetting.text = "About"
-                Glide.with(this@SettingFragment)
-                    .load(R.drawable.baseline_info_24)
-                    .into(imgCardSetting)
-            }
+//            binding.cardAbout.apply {
+//                tvCardSetting.text = "About"
+//                Glide.with(this@SettingFragment)
+//                    .load(R.drawable.baseline_info_24)
+//                    .into(imgCardSetting)
+//            }
 
             binding.cardChangeLanguage.apply {
                 tvCardSetting.text = "Change the language"
@@ -97,20 +97,20 @@ class SettingFragment : Fragment() {
         }
 
         binding.cardChangeProfile.root.setOnClickListener {
-            binding.cardSetProfile.root.visibility = View.VISIBLE
-            binding.cardSetProfile.btnConfirm.setOnClickListener {
-                viewModel.updateData(auth.currentUser?.displayName.toString(),
-                    object : FirebaseClient.UpdateDataListener {
-                        override fun onUpdate(userModel: UserModel) {
-                            
-                            userModel.name = binding.cardSetProfile.edName.text.toString()
-                            userModel.gender = "Female"
-                            userModel.level = binding.cardSetProfile.level.text.toString()
-
-                        }
-
-                    })
-                binding.cardSetProfile.root.visibility = View.GONE
+//            binding.cardSetProfile.root.visibility = View.VISIBLE
+//            binding.cardSetProfile.btnConfirm.setOnClickListener {
+//                viewModel.updateData(auth.currentUser?.displayName.toString(),
+//                    object : FirebaseClient.UpdateDataListener {
+//                        override fun onUpdate(userModel: UserModel) {
+//
+//                            userModel.name = binding.cardSetProfile.edName.text.toString()
+//                            userModel.gender = "Female"
+//                            userModel.level = binding.cardSetProfile.level.text.toString()
+//
+//                        }
+//
+//                    })
+//                binding.cardSetProfile.root.visibility = View.GONE
 
             }
 
@@ -118,4 +118,3 @@ class SettingFragment : Fragment() {
 
 
     }
-}
