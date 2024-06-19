@@ -47,8 +47,9 @@ class FirebaseClient {
     fun sendData(dataModel: DataModel, statusListener: FirebaseStatusListener) {
         db.child("video_call").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (!isOpponentMatched) {
-                    var isMatchFound = false
+                try {
+                    if (!isOpponentMatched) {
+                        var isMatchFound = false
 
 //                    snapshot.children.forEach { roomSnapshot ->
 //                        Log.d(TAG, "Checking room: ${roomSnapshot.key}, user count: ${roomSnapshot.childrenCount}")
@@ -68,11 +69,12 @@ class FirebaseClient {
 //                            }
 //                        }
 //                    }
-                    snapshot.children.firstOrNull { roomSnapshot ->
-                        roomSnapshot.childrenCount == 1L
+                        snapshot.children.firstOrNull { roomSnapshot ->
+                            roomSnapshot.childrenCount == 1L
 
-                    }?.let { availableRoom ->
-                        val otherUser = availableRoom.children.firstOrNull { it.key != currentUsername }
+                        }?.let { availableRoom ->
+                            val otherUser =
+                                availableRoom.children.firstOrNull { it.key != currentUsername }
 
                             db.child("video_call").child(availableRoom.key!!)
                                 .child(currentUsername!!)
@@ -86,15 +88,21 @@ class FirebaseClient {
 //                            isMatchFound = true
 //                            statusListener.onSuccess()
 
+                        }
+
+                        if (!isMatchFound) {
+                            db.child("video_call").child(NEW_ROOM_KEY)
+                                .child(currentUsername!!)
+                                .setValue(gson.toJson(dataModel))
+                            dataModel.target =
+                                snapshot.children.firstOrNull { it.key != currentUsername }
+                                    .toString()
+                            statusListener.onSuccess()
+                        }
                     }
 
-                    if (!isMatchFound) {
-                        db.child("video_call").child(NEW_ROOM_KEY)
-                            .child(currentUsername!!)
-                            .setValue(gson.toJson(dataModel))
-                        dataModel.target = snapshot.children.firstOrNull {it.key != currentUsername}.toString()
-                        statusListener.onSuccess()
-                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "sendData: ${e.message}")
                 }
             }
 
@@ -143,15 +151,16 @@ class FirebaseClient {
         if (snapshot.exists() && snapshot.childrenCount == 2L) {
             snapshot.children.forEach { userSnapshot ->
                 if (userSnapshot.key != username) {
-                        val json = Objects.requireNonNull(userSnapshot.value).toString() // Convert snapshot value to string
-                        Log.d(TAG, "json $json")
+                    val json = Objects.requireNonNull(userSnapshot.value)
+                        .toString() // Convert snapshot value to string
+                    Log.d(TAG, "json $json")
 
-                        try {
-                            val dataModel = gson.fromJson(json, DataModel::class.java)
-                            newEventListener.onNewEvent(dataModel)
-                        } catch (e: Exception) {
-                            Log.e(TAG, "error ${e.message}")
-                        }
+                    try {
+                        val dataModel = gson.fromJson(json, DataModel::class.java)
+                        newEventListener.onNewEvent(dataModel)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "error ${e.message}")
+                    }
                 }
 
 

@@ -1,10 +1,25 @@
 package com.bangkit.naraspeak.data.webrtc
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioPlaybackCaptureConfiguration
+import android.media.AudioRecord
+import android.media.MediaRecorder
+import android.media.projection.MediaProjection
+import android.media.projection.MediaProjectionConfig
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import com.bangkit.naraspeak.BuildConfig
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
+import com.bangkit.naraspeak.helper.createTemptFile
 import com.google.gson.Gson
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import okio.IOException
 import org.webrtc.AudioSource
 import org.webrtc.AudioTrack
 import org.webrtc.Camera2Enumerator
@@ -23,6 +38,8 @@ import org.webrtc.SurfaceTextureHelper
 import org.webrtc.SurfaceViewRenderer
 import org.webrtc.VideoSource
 import org.webrtc.VideoTrack
+import org.webrtc.audio.JavaAudioDeviceModule.AudioSamples
+import java.net.URISyntaxException
 
 class WebRtcClient(
     private val context: Context,
@@ -48,6 +65,9 @@ class WebRtcClient(
     private lateinit var localStream: MediaStream
 
     var peerListener: PeerListener? = null
+    private var mediaRecorder: MediaRecorder? = null
+
+    private lateinit var socket: Socket
 
 
     init {
@@ -68,6 +88,13 @@ class WebRtcClient(
         localAudioSource = peerConnectionFactory.createAudioSource(mediaConstraints)
 
         mediaConstraints.mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
+
+        try {
+            socket = IO.socket(BuildConfig.URL_STT)
+            Log.d(TAG, "${socket.isActive}")
+        } catch (e: URISyntaxException) {
+            Log.e(TAG, "socket STT: ${e.message}, ${e.reason}")
+        }
 
     }
 
@@ -232,6 +259,59 @@ class WebRtcClient(
                 dataModelType = DataModelType.IceCandidate
             )
         )
+
+    }
+
+    fun socketConnect() {
+        socket.connect()
+    }
+
+    fun socketDisconnect() {
+        socket.disconnect()
+    }
+
+    fun sendMessage(event: String, message: String) {
+        socket.emit(event, message)
+    }
+
+    fun on(event: String, listener: Emitter.Listener) {
+        socket.on(event, listener)
+    }
+
+    fun off(event: String, listener: Emitter.Listener) {
+        socket.off(event, listener)
+    }
+
+
+
+    fun startRecordAudio(context: Context) {
+        val fileLocation = createTemptFile(context)
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                setOutputFile(fileLocation)
+            } else {
+                setOutputFile(fileLocation.absolutePath)
+            }
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        }
+        Log.d(TAG, "recordingLocation: ${fileLocation.path}")
+        try {
+            mediaRecorder?.prepare()
+            mediaRecorder?.start()
+        } catch (e: IOException) {
+            Log.e(TAG, "startRecording: ${e.message}")
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "startRecording: ${e.message}")
+        }
+
+    }
+
+    fun stopRecordAudio() {
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+        mediaRecorder = null
 
     }
 

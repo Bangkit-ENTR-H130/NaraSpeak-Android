@@ -1,10 +1,12 @@
 package com.bangkit.naraspeak.ui.videocall
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,6 +16,7 @@ import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.databinding.ActivityVideoCallBinding
+import io.socket.emitter.Emitter
 import org.webrtc.RendererCommon
 
 class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnectionListener {
@@ -81,7 +84,29 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
                                             //receive the call
 //                        videoCallRepository.st(dataModel.sender.toString())
                                             Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
-                                            videoCallRepository.startCall(dataModel.sender.toString())
+                                            videoCallRepository.startCall(dataModel.sender.toString(), this@VideoCallActivity)
+                                            videoCallRepository.on("receive_audio_text"
+                                            ) { args ->
+                                                for (i in args) {
+                                                    Log.d(TAG, i.toString())
+                                                    videoCallRepository.sendMessageSTT("send_audio_text", i.toString())
+                                                    runOnUiThread {
+                                                        binding.tvRecommendedTopic.text =
+                                                            i.toString()
+                                                    }
+                                                }
+
+
+
+                                            }
+
+//                                            val buffer = ByteArray(minBufferSize)
+//                                            while (isRecording) {
+//                                                val read = audioRecord.read(buffer, 0, buffer.size)
+//                                                if (read > 0) {
+//                                                    socketManager.sendMessage("send_audio_data", buffer.toString(Charsets.ISO_8859_1))
+//                                                }
+//                                            }
 
                                             binding.incomingCallLayout.visibility = View.GONE
                                             binding.whoToCallLayout.visibility = View.GONE
@@ -102,6 +127,8 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
                         binding.cardOverlayCall.btnHungUp.setOnClickListener {
                             videoCallRepository.disconnect()
+                            videoCallRepository.off("receive_audio_text"
+                            ) { }
                             finish()
                         }
 
@@ -129,7 +156,7 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
                             //receive the call
 //                        videoCallRepository.st(dataModel.sender.toString())
                             Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
-                            videoCallRepository.startCall(dataModel.sender.toString())
+                            videoCallRepository.startCall(dataModel.sender.toString(), this@VideoCallActivity)
 
                             binding.incomingCallLayout.visibility = View.GONE
                             binding.whoToCallLayout.visibility = View.GONE
@@ -176,6 +203,10 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             finish()
 
         }
+    }
+
+    companion object {
+        private const val TAG = "VideoCallActivity"
     }
 
 

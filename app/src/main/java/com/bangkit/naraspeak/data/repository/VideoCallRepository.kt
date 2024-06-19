@@ -1,14 +1,18 @@
 package com.bangkit.naraspeak.data.repository
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.webrtc.PeerConnectionObserver
 import com.bangkit.naraspeak.data.webrtc.WebRtcClient
 import com.google.gson.Gson
+import io.socket.emitter.Emitter
+import io.socket.emitter.Emitter.Listener
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.PeerConnection
@@ -163,8 +167,10 @@ class VideoCallRepository(
 
     }
 
-    fun startCall(target: String) {
+    fun startCall(target: String, context: Context) {
         webRtcClient.call(target)
+        webRtcClient.socketConnect()
+        webRtcClient.startRecordAudio(context)
     }
 
     fun switchCamera() {
@@ -181,10 +187,30 @@ class VideoCallRepository(
 
     fun disconnect() {
         webRtcClient.disconnect()
+        webRtcClient.stopRecordAudio()
+        webRtcClient.socketDisconnect()
     }
 
     fun findMatch() {
 //        firebaseClient.sendData()
+    }
+
+    fun sConnect() {
+    }
+
+    fun sDisconnect() {
+    }
+
+    fun sendMessageSTT(event: String, message: String) {
+        webRtcClient.sendMessage(event, message)
+    }
+
+    fun on(event: String, listener: Emitter.Listener) {
+        webRtcClient.on(event, listener)
+    }
+
+    fun off(event: String, listener: Emitter.Listener) {
+        webRtcClient.off(event, listener)
     }
 
     interface WebRTCConnectionListener {

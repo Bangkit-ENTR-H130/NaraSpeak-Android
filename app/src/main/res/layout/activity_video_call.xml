@@ -59,6 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <com.bangkit.naraspeak.ui.customview.CustomButton
+        android:id="@+id/tv_recommended_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Recommended Topic : What do you think about climate change"

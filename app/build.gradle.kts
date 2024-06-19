@@ -16,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "URL_STT", "\"https://backend-dot-naraspeak.et.r.appspot.com\"")
     }
 
     buildTypes {
@@ -37,6 +38,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -76,6 +78,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
+    implementation("io.socket:socket.io-client:2.0.1")
 
 
 
