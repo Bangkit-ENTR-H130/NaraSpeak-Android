@@ -1,6 +1,5 @@
 package com.bangkit.naraspeak.ui.videocall
 
-import android.content.Context
 import android.content.Intent
 import android.media.MediaRecorder
 import android.os.Build
@@ -13,7 +12,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,12 +21,11 @@ import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.local.HistoryEntity
-import com.bangkit.naraspeak.data.webrtc.WebRtcClient
 import com.bangkit.naraspeak.databinding.ActivityVideoCallBinding
-import com.bangkit.naraspeak.helper.ViewModelFactory
+import com.bangkit.naraspeak.helper.AccountViewModelFactory
+import com.bangkit.naraspeak.helper.HistoryViewModelFactory
 import com.bangkit.naraspeak.helper.createTemptFile
 import com.bangkit.naraspeak.ui.result.CompleteSessionActivity
-import io.socket.emitter.Emitter
 import org.webrtc.RendererCommon
 import java.io.IOException
 import java.util.Locale
@@ -54,7 +51,7 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
     private val history = HistoryEntity()
 
     private val viewModel by viewModels<VideoCallViewModel> {
-        ViewModelFactory.getHistoryInstance(this@VideoCallActivity)
+        HistoryViewModelFactory.getHistoryInstance(this@VideoCallActivity)
     }
 
 
@@ -87,86 +84,11 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
         )
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
-        transcribingEvent()
 
 
     }
 
-    private fun transcribingEvent() {
-        mSpeechRecognizer.setRecognitionListener(object : RecognitionListener {
-            override fun onReadyForSpeech(bundle: Bundle) {
-                Log.d("SpeechRecognizer", "Ready for speech")
-            }
 
-            override fun onBeginningOfSpeech() {
-                Log.d("SpeechRecognizer", "Speech started")
-            }
-
-            override fun onRmsChanged(v: Float) {
-                Log.d("SpeechRecognizer", "RMS changed: $v")
-            }
-
-            override fun onBufferReceived(bytes: ByteArray) {
-                Log.d("SpeechRecognizer", "Buffer received")
-            }
-
-            override fun onEndOfSpeech() {
-                Log.d("SpeechRecognizer", "Speech ended")
-
-// if (isListening) {
-// restartListening()
-// }
-            }
-
-
-            override fun onError(i: Int) {
-                Log.e("SpeechRecognizer", "Error: $i")
-
-                if (i == SpeechRecognizer.ERROR_NO_MATCH ) {
-                    restartListening()
-                }
-            }
-
-            override fun onResults(bundle: Bundle) {
-                val matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                Log.d("TRANSCRIPT", "${matches?.get(0)}")
-                Log.d("SpeechRecognizer", "Results received: $matches")
-                if (matches != null) {
-//                    editText.append(matches[0] + "\n")
-                }
-                if (isListening) {
-                    restartListening()
-                }
-            }
-
-            override fun onPartialResults(bundle: Bundle) {
-                Log.d("SpeechRecognizer", "Partial results received")
-            }
-
-            override fun onEvent(i: Int, bundle: Bundle) {
-                Log.d("SpeechRecognizer", "Event: $i")
-            }
-        })
-
-    }
-
-    private fun startListening() {
-            isListening = true
-            Log.d("SpeechRecognizer", "Starting to listen")
-            mSpeechRecognizer.startListening(mSpeechRecognizerIntent)
-
-    }
-
-    private fun stopListening() {
-        isListening = false
-        Log.d("SpeechRecognizer", "Stopping listening")
-        mSpeechRecognizer.stopListening()
-    }
-
-    private fun restartListening() {
-        Log.d("SpeechRecognizer", "Restarting listening")
-        mSpeechRecognizer.startListening(mSpeechRecognizerIntent)
-    }
 
     private fun initiateVideoCall() {
         videoCallRepository.setLocalView(binding.vcUser1)
@@ -206,16 +128,13 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
                 if (dataModel.dataModelType == DataModelType.StartCall) {
                     runOnUiThread {
                         binding.incomingNameTV.text = dataModel.sender + " is Calling you"
-//                        binding.incomingCallLayout.visibility = View.VISIBLE
-                        binding.tvRecommendedTopic.text = generateRandomTopic
+                        binding.tvRecommendedTopic.text = "Recommended topic: $generateRandomTopic"
 
                         binding.btnRetry.setOnClickListener {
                             //receive the call
                             Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
                             videoCallRepository.startCall(dataModel.sender.toString())
-//                            videoCallRepository.startRecording(this@VideoCallActivity)
                             startRecordAudio()
-                            startListening()
 
 
 //                            videoCallRepository.on("receive_audio_text"
@@ -264,9 +183,6 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
         binding.cardOverlayCall.btnHungUp.setOnClickListener {
             videoCallRepository.disconnect()
-            videoCallRepository.off("receive_audio_text"
-            ) { }
-            stopListening()
             stopRecordAudio()
             val intent = Intent(this@VideoCallActivity, CompleteSessionActivity::class.java)
             startActivity(intent)

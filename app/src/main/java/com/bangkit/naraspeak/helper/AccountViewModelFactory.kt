@@ -12,53 +12,44 @@ import com.bangkit.naraspeak.ui.datafill.DataFillViewModel
 import com.bangkit.naraspeak.ui.homepage.setting.SettingViewModel
 import com.bangkit.naraspeak.ui.login.LoginViewModel
 import com.bangkit.naraspeak.ui.register.RegisterViewModel
+import com.bangkit.naraspeak.ui.result.CompleteSessionViewModel
 import com.bangkit.naraspeak.ui.videocall.VideoCallViewModel
 
-class ViewModelFactory(
-    private val accountRepository: AccountRepository? = null,
-    private val videoCallRepository: VideoCallRepository? = null,
-    private val historyRepository: HistoryRepository? = null
+class AccountViewModelFactory(
+    private val accountRepository: AccountRepository,
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return accountRepository?.let { LoginViewModel(it) } as T
+            return LoginViewModel(accountRepository) as T
         }
         if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-            return accountRepository?.let { RegisterViewModel(it) } as T
+            return RegisterViewModel(accountRepository) as T
         }
         if (modelClass.isAssignableFrom(DataFillViewModel::class.java)) {
-            return accountRepository?.let { DataFillViewModel(it) } as T
+            return DataFillViewModel(accountRepository) as T
         }
         if (modelClass.isAssignableFrom(SettingViewModel::class.java)) {
-            return accountRepository?.let { SettingViewModel(it) } as T
+            return SettingViewModel(accountRepository) as T
         }
-        if (modelClass.isAssignableFrom(VideoCallViewModel::class.java)) {
-            return historyRepository?.let { VideoCallViewModel(it) } as T
+        if (modelClass.isAssignableFrom(CompleteSessionViewModel::class.java)) {
+            return CompleteSessionViewModel(accountRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 
 
     companion object {
-        private var instance: ViewModelFactory? = null
+        private var instance: AccountViewModelFactory? = null
 
         //tambahkan context kalau sudah lengkap
         fun getInstance(
 
-        ): ViewModelFactory =
+        ): AccountViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideAccountRepository())
+                instance ?: AccountViewModelFactory(Injection.provideAccountRepository())
             }.also { instance = it }
 
-        fun getHistoryInstance(
-            context: Context
-        ): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(accountRepository = null,
-                    videoCallRepository = null,
-                    Injection.provideHistoryRepository(context))
-            }.also { instance = it }
+
     }
-
 }

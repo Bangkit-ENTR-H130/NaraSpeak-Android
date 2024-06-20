@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.databinding.ActivityDataFillBinding
-import com.bangkit.naraspeak.helper.ViewModelFactory
+import com.bangkit.naraspeak.helper.AccountViewModelFactory
 import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.bangkit.naraspeak.ui.register.RegisterActivity
 import com.google.firebase.Firebase
@@ -24,8 +24,8 @@ import com.google.firebase.auth.auth
 class DataFillActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataFillBinding
     private lateinit var auth: FirebaseAuth
-    private val viewModelFactory = ViewModelFactory.getInstance()
-    private val viewModel by viewModels<DataFillViewModel> { viewModelFactory }
+    private val accountViewModelFactory = AccountViewModelFactory.getInstance()
+    private val viewModel by viewModels<DataFillViewModel> { accountViewModelFactory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

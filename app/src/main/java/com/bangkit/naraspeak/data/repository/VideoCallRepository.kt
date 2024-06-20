@@ -337,23 +337,6 @@ class VideoCallRepository(
 //        firebaseClient.sendData()
     }
 
-    fun sConnect() {
-    }
-
-    fun sDisconnect() {
-    }
-
-    fun sendMessageSTT(event: String, message: String) {
-        webRtcClient.sendMessage(event, message)
-    }
-
-    fun on(event: String, listener: Emitter.Listener) {
-        webRtcClient.on(event, listener)
-    }
-
-    fun off(event: String, listener: Emitter.Listener) {
-        webRtcClient.off(event, listener)
-    }
 
     interface WebRTCConnectionListener {
         fun webRtcConnected()

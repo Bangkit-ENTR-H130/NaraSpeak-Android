@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_mistakes"
+        android:id="@+id/card_grammar"
         android:layout_width="match_parent"
         android:layout_height="430dp"
         tools:listitem="@layout/card_mistakes"
@@ -65,6 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_mistakes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
     
     <View
         android:id="@+id/line_end"
@@ -74,7 +75,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/primary_10"
-        app:layout_constraintTop_toBottomOf="@id/rv_mistakes"
+        app:layout_constraintTop_toBottomOf="@id/card_grammar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     

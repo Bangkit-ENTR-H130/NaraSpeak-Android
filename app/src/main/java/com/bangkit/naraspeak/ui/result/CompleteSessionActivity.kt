@@ -1,20 +1,34 @@
 package com.bangkit.naraspeak.ui.result
 
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.assemblyai.api.AssemblyAI
+import com.assemblyai.api.resources.transcripts.types.TranscriptOptionalParams
+import com.bangkit.naraspeak.BuildConfig
 import com.bangkit.naraspeak.R
-import com.bangkit.naraspeak.data.local.HistoryEntity
 import com.bangkit.naraspeak.databinding.ActivityCompleteSessionBinding
-import com.bangkit.naraspeak.helper.ViewModelFactory
+import com.bangkit.naraspeak.helper.Result
+import com.bangkit.naraspeak.helper.AccountViewModelFactory
+import com.bangkit.naraspeak.helper.HistoryViewModelFactory
 import com.bangkit.naraspeak.ui.videocall.VideoCallViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.IOException
 
@@ -25,7 +39,11 @@ class CompleteSessionActivity : AppCompatActivity() {
     private var isReady: Boolean = false
 
     private val viewModel: VideoCallViewModel by viewModels {
-        ViewModelFactory.getHistoryInstance(this)
+        HistoryViewModelFactory.getHistoryInstance(this)
+    }
+
+    private val uploadViewModel: CompleteSessionViewModel by viewModels {
+        AccountViewModelFactory.getInstance()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,24 +57,77 @@ class CompleteSessionActivity : AppCompatActivity() {
             insets
         }
 
-        // Example usage to get audio path (replace with your logic)
-        currentAudioPath = "/storage/emulated/0/Android/data/com.bangkit.naraspeak/cache/2024Jun20278161433841704290.mp3"
-
-        binding.cardRecord.placeholder.setOnClickListener {
-            initMediaPlayer(currentAudioPath)
-        }
-
-        binding.cardRecord.btnYes.setOnClickListener {
-            releaseMediaPlayer()
-        }
-
         viewModel.getHistory().observe(this) {
             binding.tvFinishDesc.text = it.audio
+            currentAudioPath = "${it.audio}"
+
+            binding.cardRecord.placeholder.setOnClickListener {
+                initMediaPlayer(currentAudioPath)
+            }
+
+            binding.cardRecord.btnYes.setOnClickListener {
+                val audioToFile = File(currentAudioPath)
+                val requestBody = audioToFile.asRequestBody("audio/*".toMediaTypeOrNull())
+                val multiPartBody = MultipartBody.Part.createFormData("audio", audioToFile.name, requestBody)
+                uploadViewModel.uploadAudio(multiPartBody).observe(this) { result ->
+                    when (result) {
+                        is Result.Failed -> {}
+                        Result.Loading -> {}
+                        is Result.Success -> {
+                            // Handle success
+                        }
+                    }
+                }
+            }
+
+            binding.cardRecord.btnNo.setOnClickListener {
+                lifecycleScope.launch {
+                    val aai: AssemblyAI = AssemblyAI.builder()
+                        .apiKey(BuildConfig.KEY)
+                        .build()
+
+                    val params = TranscriptOptionalParams.builder()
+                        .speakerLabels(false)
+                        .build()
+
+                    val transcript = withContext(Dispatchers.IO) {
+                        aai.transcripts().transcribe(File(currentAudioPath), params)
+                    }
+
+                    val jsonText = """
+                        {
+                            "text": "${transcript.text.get()}"
+                        }
+                    """.trimIndent()
+                    val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), jsonText)
+
+
+                    withContext(Dispatchers.Main) {
+                        uploadViewModel.postGrammarPrediction(requestBody).observe(this@CompleteSessionActivity) { result ->
+                            when (result) {
+                                is Result.Failed -> {
+
+                                }
+                                Result.Loading -> {}
+                                is Result.Success -> {
+                                    val intent = Intent(this@CompleteSessionActivity, ResultActivity::class.java)
+                                    intent.putExtra(EXTRA_CORRECTION, result.data.predictions?.first())
+                                    intent.putExtra(EXTRA_ORIGINAL, transcript.text.get())
+
+                                    Log.d(TAG, "grammarCheck: ${result.data.predictions?.first()}"
+                                    )
+                                    startActivity(intent)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun initMediaPlayer(filePath: String) {
-        releaseMediaPlayer() // Release existing MediaPlayer instance
+        releaseMediaPlayer()
 
         mMediaPlayer = MediaPlayer()
         val attributes = AudioAttributes.Builder()
@@ -66,7 +137,7 @@ class CompleteSessionActivity : AppCompatActivity() {
         mMediaPlayer?.setAudioAttributes(attributes)
 
         try {
-            mMediaPlayer?.setDataSource(this@CompleteSessionActivity, Uri.parse("file://$filePath"))
+            mMediaPlayer?.setDataSource(this@CompleteSessionActivity, Uri.parse(filePath))
             mMediaPlayer?.setOnPreparedListener {
                 isReady = true
                 mMediaPlayer?.start()
@@ -99,5 +170,7 @@ class CompleteSessionActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "CompleteSessionActivity"
+        const val EXTRA_ORIGINAL = "extra_original"
+        const val EXTRA_CORRECTION = "extra_correction"
     }
 }

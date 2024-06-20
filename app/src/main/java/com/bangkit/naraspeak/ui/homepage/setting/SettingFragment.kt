@@ -1,24 +1,17 @@
 package com.bangkit.naraspeak.ui.homepage.setting
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bangkit.naraspeak.R
-import com.bangkit.naraspeak.data.firebase.FirebaseClient
-import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.databinding.FragmentSettingBinding
-import com.bangkit.naraspeak.helper.ViewModelFactory
+import com.bangkit.naraspeak.helper.AccountViewModelFactory
 import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,8 +26,8 @@ class SettingFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
 
-    private val viewModelFactory = ViewModelFactory.getInstance()
-    private val viewModel by viewModels<SettingViewModel> { viewModelFactory }
+    private val accountViewModelFactory = AccountViewModelFactory.getInstance()
+    private val viewModel by viewModels<SettingViewModel> { accountViewModelFactory }
     val db = FirebaseDatabase.getInstance()
 
 

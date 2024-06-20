@@ -1,5 +1,6 @@
 package com.bangkit.naraspeak.data.webrtc
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFormat
@@ -15,6 +16,7 @@ import com.bangkit.naraspeak.BuildConfig
 import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.helper.createTemptFile
+import com.bangkit.naraspeak.ui.videocall.VideoCallActivity
 import com.google.gson.Gson
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -66,7 +68,6 @@ class WebRtcClient(
 
     var peerListener: PeerListener? = null
 
-    private lateinit var socket: Socket
 
 
     init {
@@ -87,14 +88,6 @@ class WebRtcClient(
         localAudioSource = peerConnectionFactory.createAudioSource(mediaConstraints)
 
         mediaConstraints.mandatory.add(MediaConstraints.KeyValuePair("OfferToReceiveVideo", "true"))
-
-        try {
-            socket = IO.socket(BuildConfig.URL_STT)
-            Log.d(TAG, "socket: ${socket.isActive}")
-        } catch (e: URISyntaxException) {
-            Log.e(TAG, "socket STT: ${e.message}, ${e.reason}")
-        }
-
     }
 
     private fun initPeerConnectionFactory() {
@@ -320,29 +313,6 @@ class WebRtcClient(
         )
 
     }
-
-    fun socketConnect() {
-        socket.connect()
-    }
-
-    fun socketDisconnect() {
-        socket.disconnect()
-    }
-
-    fun sendMessage(event: String, message: String) {
-        socket.emit(event, message)
-    }
-
-    fun on(event: String, listener: Emitter.Listener) {
-        socket.on(event, listener)
-    }
-
-    fun off(event: String, listener: Emitter.Listener) {
-        socket.off(event, listener)
-    }
-
-
-
 
 
 

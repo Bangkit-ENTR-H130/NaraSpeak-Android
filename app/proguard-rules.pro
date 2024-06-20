@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# gRPC
+-keep class io.grpc.** { *; }
+-keep class com.google.api.gax.** { *; }
+-keep class com.google.auth.oauth2.** { *; }
+
+# Google Cloud Speech
+-keep class com.google.cloud.speech.v1.** { *; }
+-keepclassmembers class com.google.cloud.speech.v1.** { *; }
+-keep interface com.google.cloud.speech.v1.** { *; }

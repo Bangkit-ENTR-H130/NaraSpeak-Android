@@ -1,9 +1,12 @@
 package com.bangkit.naraspeak.helper
 
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import android.widget.ProgressBar
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -24,7 +27,7 @@ fun isValidPassword(password: String): Boolean {
 
 fun createTemptFile(context: Context): File {
     val cacheDir = context.externalCacheDir
-    return File.createTempFile(date, ".mp3", cacheDir)
+    return File.createTempFile(date, ".wav", cacheDir)
 }
 
 //fun isValidPassword(password: String?): Boolean {
