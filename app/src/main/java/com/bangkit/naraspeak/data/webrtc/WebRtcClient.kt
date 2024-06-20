@@ -65,7 +65,6 @@ class WebRtcClient(
     private lateinit var localStream: MediaStream
 
     var peerListener: PeerListener? = null
-    private var mediaRecorder: MediaRecorder? = null
 
     private lateinit var socket: Socket
 
@@ -91,7 +90,7 @@ class WebRtcClient(
 
         try {
             socket = IO.socket(BuildConfig.URL_STT)
-            Log.d(TAG, "${socket.isActive}")
+            Log.d(TAG, "socket: ${socket.isActive}")
         } catch (e: URISyntaxException) {
             Log.e(TAG, "socket STT: ${e.message}, ${e.reason}")
         }
@@ -238,6 +237,66 @@ class WebRtcClient(
         }
     }
 
+    fun callGroup(target: ArrayList<String>) {
+        try {
+            peerConnection.createOffer(object : WebRtcSdp() {
+                override fun onCreateSuccess(sessionDescription: SessionDescription) {
+                    super.onCreateSuccess(sessionDescription)
+                    peerConnection.setLocalDescription(
+                        object : WebRtcSdp() {
+                            override fun onSetSuccess() {
+                                super.onSetSuccess()
+                                peerListener?.onTransferDataToOtherPeer(
+                                    DataModel(
+                                        sender = username,
+                                        groupTarget = target,
+                                        data = sessionDescription.description,
+                                        dataModelType = DataModelType.OfferGroup
+
+                                    )
+                                )
+
+                            }
+
+                        }, sessionDescription
+                    )
+                }
+            }, mediaConstraints)
+        } catch (e: Exception) {
+            Log.e(TAG, "call: ${e.message}")
+        }
+    }
+
+    fun answerGroup(target: ArrayList<String>) {
+        try {
+            peerConnection.createAnswer(object : WebRtcSdp() {
+                override fun onCreateSuccess(sessionDescription: SessionDescription) {
+                    super.onCreateSuccess(sessionDescription)
+                    peerConnection.setLocalDescription(
+                        object : WebRtcSdp() {
+                            override fun onSetSuccess() {
+                                super.onSetSuccess()
+                                peerListener?.onTransferDataToOtherPeer(
+                                    DataModel(
+                                        sender = username,
+                                        groupTarget = target,
+                                        data = sessionDescription.description,
+                                        dataModelType = DataModelType.AnswerGroup
+
+                                    )
+                                )
+
+                            }
+
+                        }, sessionDescription
+                    )
+                }
+            }, mediaConstraints)
+        } catch (e: Exception) {
+            Log.e(TAG, "call: ${e.message}")
+        }
+    }
+
 
     fun onRemoteSessionReceived(sessionDescription: SessionDescription) {
         peerConnection.setRemoteDescription(object : WebRtcSdp() {
@@ -284,36 +343,7 @@ class WebRtcClient(
 
 
 
-    fun startRecordAudio(context: Context) {
-        val fileLocation = createTemptFile(context)
-        mediaRecorder = MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-                setOutputFile(fileLocation)
-            } else {
-                setOutputFile(fileLocation.absolutePath)
-            }
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        }
-        Log.d(TAG, "recordingLocation: ${fileLocation.path}")
-        try {
-            mediaRecorder?.prepare()
-            mediaRecorder?.start()
-        } catch (e: IOException) {
-            Log.e(TAG, "startRecording: ${e.message}")
-        } catch (e: IllegalStateException) {
-            Log.e(TAG, "startRecording: ${e.message}")
-        }
 
-    }
-
-    fun stopRecordAudio() {
-        mediaRecorder?.stop()
-        mediaRecorder?.release()
-        mediaRecorder = null
-
-    }
 
 
     fun switchCamera() {

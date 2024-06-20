@@ -22,19 +22,16 @@ import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.databinding.ActivityHomepageBinding
 import com.bangkit.naraspeak.ui.groupcall.GroupCallActivity
 import com.bangkit.naraspeak.ui.videocall.VideoCallActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class HomepageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomepageBinding
-
-
     private lateinit var repository: VideoCallRepository
     private val firebaseClient: FirebaseClient = FirebaseClient()
     private lateinit var auth: FirebaseAuth
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,20 +45,12 @@ class HomepageActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
         auth = Firebase.auth
-
         repository = VideoCallRepository.getInstance(firebaseClient)
-
-
-
-
         setupBottomNavigation()
 
         binding.fab.setOnClickListener {
             fabAction()
         }
-
-
-
     }
 
     private fun fabAction() {
@@ -69,15 +58,9 @@ class HomepageActivity : AppCompatActivity() {
             View.GONE -> {
                 binding.cardOverlayStart.root.visibility = View.VISIBLE
                 binding.polygon.visibility = View.VISIBLE
-
-
-                    startVideoCall()
-//                testDatabase(username)
-
-
+                startVideoCall()
                 binding.cardOverlayStart.tvStartGroup.setOnClickListener {
-                    val intent = Intent(this, GroupCallActivity::class.java)
-                    startActivity(intent)
+                    startGroupCall()
                 }
             }
             else -> {
@@ -85,6 +68,52 @@ class HomepageActivity : AppCompatActivity() {
                 binding.polygon.visibility = View.GONE
             }
         }
+    }
+
+    private fun startGroupCall() {
+//        when (binding.cardGroup.root.visibility) {
+//            View.GONE -> {
+//                binding.cardGroup.root.visibility = View.VISIBLE
+//                binding.cardGroup.btnGroupConfirm.setOnClickListener {
+//                    handleGroupConfirm()
+//                }
+//            }
+//            View.VISIBLE -> {
+//                binding.cardGroup.root.visibility = View.GONE
+//            }
+//        }
+        Toast.makeText(this@HomepageActivity, "Coming Soon", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleGroupConfirm() {
+        val array = arrayListOf(
+            binding.cardGroup.tv1.text.toString(),
+            binding.cardGroup.tv2.text.toString(),
+            binding.cardGroup.tv3.text.toString()
+        )
+
+        repository.loginGroup(auth.currentUser?.displayName.toString(), object : FirebaseClient.FirebaseStatusListener {
+            override fun onError() {
+                Toast.makeText(this@HomepageActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "Login failed")
+            }
+
+            override fun onSuccess() {
+                Log.d(TAG, "Login successful")
+                repository.sendGroupRequest(array, object : FirebaseClient.FirebaseStatusListener {
+                    override fun onError() {
+                        Toast.makeText(this@HomepageActivity, "Couldn't make the call", Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "Group request failed")
+                    }
+
+                    override fun onSuccess() {
+                        Log.d(TAG, "Group request successful")
+                        val intent = Intent(this@HomepageActivity, GroupCallActivity::class.java)
+                        startActivity(intent)
+                    }
+                })
+            }
+        }, this@HomepageActivity)
     }
 
     private fun setupBottomNavigation() {
@@ -101,55 +130,28 @@ class HomepageActivity : AppCompatActivity() {
 
     private fun startVideoCall() {
         binding.cardOverlayStart.tvStartNormal.setOnClickListener {
-//            if (user == null || user.displayName.isNullOrEmpty()) {
-//                Log.e("startVideoCall", "User or displayName is null")
-//
-//            }
+            repository.login(auth.currentUser?.uid.toString(), object : FirebaseClient.FirebaseStatusListener {
+                override fun onError() {
+                    Toast.makeText(this@HomepageActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Login failed")
+                }
 
+                override fun onSuccess() {
+                    Log.d(TAG, "Login successful")
+                    repository.sendCallRequest(object : FirebaseClient.FirebaseStatusListener {
+                        override fun onError() {
+                            Toast.makeText(this@HomepageActivity, "Couldn't make the call", Toast.LENGTH_SHORT).show()
+                            Log.e(TAG, "Call request failed")
+                        }
 
-
-
-
-
-
-            repository.login(
-                auth.currentUser?.uid.toString(),
-                object : FirebaseClient.FirebaseStatusListener {
-                    override fun onError() {
-                        Toast.makeText(
-                            this@HomepageActivity,
-                            "Something went wrong",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    override fun onSuccess() {
-                        Log.d("USERSUCCESS", auth.currentUser?.displayName.toString())
-                        repository.sendCallRequest(
-                            object : FirebaseClient.FirebaseStatusListener {
-                                override fun onError() {
-                                    Toast.makeText(
-                                        this@HomepageActivity,
-                                        "Couldnt make the call",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                }
-
-                                override fun onSuccess() {
-
-                                }
-                            })
-                        getPermission()
-                    }
-                },
-                this@HomepageActivity
-            )
-//
+                        override fun onSuccess() {
+                            Log.d(TAG, "Call request successful")
+                            getPermission()
+                        }
+                    })
+                }
+            }, this@HomepageActivity)
         }
-        Log.d("username", auth.currentUser?.displayName.toString())
-
-
     }
 
     private fun getPermission() {
@@ -163,7 +165,6 @@ class HomepageActivity : AppCompatActivity() {
         ) {
             val intent = Intent(this, VideoCallActivity::class.java)
             startActivity(intent)
-
         } else {
             requestPermissionLauncher.launch(
                 arrayOf(
@@ -174,7 +175,6 @@ class HomepageActivity : AppCompatActivity() {
         }
     }
 
-
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
@@ -182,48 +182,16 @@ class HomepageActivity : AppCompatActivity() {
             it[android.Manifest.permission.CAMERA] ?: false -> {
                 getPermission()
             }
-
             it[android.Manifest.permission.RECORD_AUDIO] ?: false -> {
                 getPermission()
             }
-
             else -> {
+                Toast.makeText(this, "Permissions denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-
-
-
-
-//    private fun testDatabase(user: FirebaseUser?) {
-//        binding.cardOverlayStart.tvStartNormal.setOnClickListener {
-//            val loginFun = repository.login(
-//                user?.displayName.toString(),
-//                object : FirebaseClient.FirebaseStatusListener {
-//                    override fun onError() {
-//                        Toast.makeText(
-//                            this@HomepageActivity,
-//                            "Something went wrong",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//
-//                    }
-//
-//                    override fun onSuccess() {
-//                        Log.d("USERSUCCESS", user?.displayName.toString())
-//                        getPermission()
-//                    }
-//
-//                },
-//                applicationContext
-//            )
-//
-//            Log.d("loginFun", loginFun.toString())
-//
-//            Log.d("username", user?.displayName.toString())
-//
-//
-//        }
+    companion object {
+        private const val TAG = "HomepageActivity"
     }
-
+}

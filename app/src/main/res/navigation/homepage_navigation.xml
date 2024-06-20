@@ -17,6 +17,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoCallActivity"
+            app:destination="@id/videoCallActivity" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -28,4 +31,9 @@
         android:name="com.bangkit.naraspeak.ui.shop.ShopActivity"
         android:label="activity_shop"
         tools:layout="@layout/activity_shop" />
+    <activity
+        android:id="@+id/videoCallActivity"
+        android:name="com.bangkit.naraspeak.ui.videocall.VideoCallActivity"
+        android:label="activity_video_call"
+        tools:layout="@layout/activity_video_call" />
 </navigation>

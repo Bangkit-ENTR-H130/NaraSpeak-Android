@@ -1,5 +1,5 @@
 package com.bangkit.naraspeak.data.model
 
 enum class DataModelType {
-    StartCall, Offer, Answer, IceCandidate
+    StartCall, Offer, Answer, IceCandidate, StartGroup, OfferGroup, AnswerGroup
 }

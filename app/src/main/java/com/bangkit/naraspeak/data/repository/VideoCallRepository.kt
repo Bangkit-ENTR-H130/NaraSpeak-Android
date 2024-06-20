@@ -151,6 +151,142 @@ class VideoCallRepository(
                     }
 
                     null -> {}
+                    DataModelType.StartGroup -> {
+
+                    }
+                    DataModelType.OfferGroup -> {
+
+                    }
+                    DataModelType.AnswerGroup -> {
+
+                    }
+                }
+            }
+
+        })
+    }
+
+    fun loginGroup(
+        username: String,
+        statusListener: FirebaseClient.FirebaseStatusListener,
+        context: Context
+    ) {
+        webRtcClient = WebRtcClient(
+            context,
+            username,
+            object : PeerConnectionObserver() {
+                override fun onAddStream(mediaStream: MediaStream?) {
+                    super.onAddStream(mediaStream)
+                    try {
+                        mediaStream?.videoTracks?.get(0)?.addSink(remoteView)
+                    } catch (e: Exception) {
+                        Log.e(TAG, e.message.toString())
+                    }
+                }
+
+                override fun onConnectionChange(newState: PeerConnection.PeerConnectionState?) {
+                    super.onConnectionChange(newState)
+                    if (newState == PeerConnection.PeerConnectionState.DISCONNECTED) {
+                        connectionListener?.webRtcClosed()
+                    }
+                    if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
+                        connectionListener?.webRtcConnected()
+                    }
+
+                }
+
+                override fun onIceCandidate(iceCandidate: IceCandidate?) {
+                    super.onIceCandidate(iceCandidate)
+                    iceCandidate?.let { webRtcClient.sendIceCandidate(it, currentTarget.toString()) }
+
+                }
+            }
+        )
+        firebaseClient.loginGroup(username, object : FirebaseClient.FirebaseStatusListener,
+            WebRtcClient.PeerListener {
+            override fun onError() {
+                statusListener.onError()
+
+            }
+
+            override fun onSuccess() {
+                statusListener.onSuccess()
+                currentUsername = username
+                webRtcClient.peerListener = this
+            }
+
+            override fun onTransferDataToOtherPeer(model: DataModel) {
+                firebaseClient.sendDataVideoGroup(
+                    model,
+                    object : FirebaseClient.FirebaseStatusListener {
+                        override fun onError() {
+
+                        }
+
+                        override fun onSuccess() {
+
+                        }
+
+                    }
+                )
+            }
+        })
+    }
+
+
+    fun sendGroupRequest(targets: ArrayList<String>, statusListener: FirebaseClient.FirebaseStatusListener) {
+        firebaseClient.sendDataVideoGroup(
+            DataModel(
+                sender = currentUsername,
+                data =  null,
+                dataModelType = DataModelType.StartGroup,
+                groupTarget = targets
+            ), statusListener
+        )
+    }
+
+    fun detectCallGroup(newEventListener: FirebaseClient.NewEventListener) {
+        firebaseClient.observeIncomingGroupCall(object : FirebaseClient.NewEventListener {
+            override fun onNewEvent(dataModel: DataModel) {
+                when (dataModel.dataModelType) {
+                    DataModelType.StartCall -> {}
+                    DataModelType.Offer -> {}
+                    DataModelType.Answer -> {}
+                    DataModelType.IceCandidate ->{
+
+                        val gson = Gson()
+                        val iceCandidate = gson.fromJson(dataModel.data, IceCandidate::class.java)
+                        webRtcClient.addIceCandidate(iceCandidate)
+
+                    }
+                    DataModelType.StartGroup -> {
+                        currentTarget = dataModel.sender
+                        newEventListener.onNewEvent(dataModel)
+                    }
+                    DataModelType.OfferGroup -> {
+                        currentTarget = dataModel.sender
+
+                        webRtcClient.onRemoteSessionReceived(
+                            SessionDescription(
+                                SessionDescription.Type.OFFER,
+                                dataModel.data
+                            )
+                        )
+
+                        dataModel.groupTarget?.let { webRtcClient.answerGroup(it) }
+
+                    }
+                    DataModelType.AnswerGroup -> {
+                        currentTarget = dataModel.sender
+
+                        webRtcClient.onRemoteSessionReceived(
+                            SessionDescription(
+                                SessionDescription.Type.ANSWER,
+                                dataModel.data
+                            )
+                        )
+                    }
+                    null -> {}
                 }
             }
 
@@ -166,11 +302,17 @@ class VideoCallRepository(
         webRtcClient.initLocalViewRenderer(surfaceViewRenderer)
 
     }
+//    fun startRecording(context: Context) {
+//        webRtcClient.startRecordAudio(context)
+//    }
 
-    fun startCall(target: String, context: Context) {
+    fun startCall(target: String) {
         webRtcClient.call(target)
 //        webRtcClient.socketConnect()
-//        webRtcClient.startRecordAudio(context)
+    }
+
+    fun startGroupCall(target: ArrayList<String>) {
+        webRtcClient.callGroup(target)
     }
 
     fun switchCamera() {

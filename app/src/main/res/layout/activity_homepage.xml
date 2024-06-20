@@ -9,6 +9,14 @@
     tools:context=".ui.homepage.HomepageActivity">
 
     <include
+        android:id="@+id/card_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        layout="@layout/card_group_call"
+        android:layout_gravity="center"/>
+
+    <include
         android:id="@+id/card_overlay_start"
         layout="@layout/card_start"
         android:layout_width="wrap_content"

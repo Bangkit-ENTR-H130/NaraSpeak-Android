@@ -17,6 +17,7 @@ import com.google.firebase.database.Transaction
 import com.google.firebase.database.Transaction.Handler
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.childEvents
+import com.google.firebase.database.snapshots
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Objects
@@ -40,7 +41,6 @@ class FirebaseClient {
         db.child("login").push().child(username).setValue("").addOnCompleteListener {
             currentUsername = username
             statusListener.onSuccess()
-
         }
     }
 
@@ -166,6 +166,49 @@ class FirebaseClient {
 
             }
         }
+    }
+
+    fun loginGroup(username: String, statusListener: FirebaseStatusListener) {
+        db.child("group_video_call").child(username).setValue("").addOnCompleteListener {
+            currentUsername = username
+            statusListener.onSuccess()
+        }
+    }
+
+
+    fun sendDataVideoGroup(dataModel: DataModel, statusListener: FirebaseStatusListener) {
+        db.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.child(dataModel.target.toString()).exists()) {
+                        db.child("group_video_call").child(dataModel.groupTarget.toString()).setValue(gson.toJson(dataModel))
+
+                    } else {
+                        statusListener.onError()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+            })
+    }
+
+    fun observeIncomingGroupCall(newEventListener: NewEventListener) {
+        db.child(currentUsername.toString()).child("group_video_call").addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val data = Objects.requireNonNull(snapshot.value).toString()
+                    val json = gson.fromJson(data, DataModel::class.java)
+                    newEventListener.onNewEvent(json)
+                } catch (e: Exception) {
+                    Log.e(TAG, "observeGroupCall: ${e.message}")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
 
 

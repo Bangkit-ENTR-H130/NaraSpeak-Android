@@ -8,6 +8,15 @@
     android:background="@color/primary_1"
     tools:context=".ui.groupcall.GroupCallActivity">
 
+    <RelativeLayout
+        android:id="@+id/call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_1"
         android:layout_width="match_parent"
@@ -17,13 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.bangkit.naraspeak.ui.customview.CustomButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem"
-        android:alpha="0.8"
-        app:layout_constraintBottom_toBottomOf="@id/vc_user_1"
-        app:layout_constraintStart_toStartOf="@id/vc_user_1"/>
+<!--    <com.bangkit.naraspeak.ui.customview.CustomButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:text="@tools:sample/lorem"-->
+<!--        android:alpha="0.8"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/vc_user_1"-->
+<!--        app:layout_constraintStart_toStartOf="@id/vc_user_1"/>-->
 
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_2"
@@ -31,44 +40,50 @@
         android:layout_height="164dp"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_below="@id/vc_user_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vc_user_1"/>
 
-    <com.bangkit.naraspeak.ui.customview.CustomButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem"
-        android:alpha="0.8"
-        app:layout_constraintBottom_toBottomOf="@id/vc_user_2"
-        app:layout_constraintStart_toStartOf="@id/vc_user_2"/>
+<!--    <com.bangkit.naraspeak.ui.customview.CustomButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:text="@tools:sample/lorem"-->
+<!--        android:alpha="0.8"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/vc_user_2"-->
+<!--        app:layout_constraintStart_toStartOf="@id/vc_user_2"/>-->
 
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_3"
         android:layout_width="match_parent"
         android:layout_height="164dp"
         android:layout_marginTop="16dp"
+        android:layout_below="@id/vc_user_2"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vc_user_2"/>
 
-    <com.bangkit.naraspeak.ui.customview.CustomButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem"
-        android:alpha="0.8"
-        app:layout_constraintBottom_toBottomOf="@id/vc_user_3"
-        app:layout_constraintStart_toStartOf="@id/vc_user_3"/>
+<!--    <com.bangkit.naraspeak.ui.customview.CustomButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:text="@tools:sample/lorem"-->
+<!--        android:alpha="0.8"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/vc_user_3"-->
+<!--        app:layout_constraintStart_toStartOf="@id/vc_user_3"/>-->
 
     <org.webrtc.SurfaceViewRenderer
         android:id="@+id/vc_user_4"
         android:layout_width="match_parent"
         android:layout_height="164dp"
         android:layout_marginTop="16dp"
+        android:layout_below="@id/vc_user_3"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vc_user_3"/>
 
+    </RelativeLayout>
+
     <include
+        android:id="@+id/card_overlay_call"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         layout="@layout/card_call"
@@ -76,6 +91,46 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/incomingCallLayout"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:background="@color/primary_10"
+        android:visibility="gone"
+        android:padding="16dp"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="someone is calling"
+            android:id="@+id/incomingNameTV"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:src="@drawable/baseline_star_24"
+            android:padding="15dp"
+            android:id="@+id/acceptButton"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:src="@drawable/baseline_phone_enabled_24"
+            android:padding="15dp"
+            android:id="@+id/rejectButton"/>
+    </LinearLayout>
 
 
 

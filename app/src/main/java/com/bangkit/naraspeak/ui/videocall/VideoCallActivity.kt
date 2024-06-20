@@ -1,6 +1,8 @@
 package com.bangkit.naraspeak.ui.videocall
 
+import android.content.Context
 import android.content.Intent
+import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionListener
@@ -10,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,9 +22,15 @@ import com.bangkit.naraspeak.data.model.DataModel
 import com.bangkit.naraspeak.data.model.DataModelType
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
+import com.bangkit.naraspeak.data.local.HistoryEntity
+import com.bangkit.naraspeak.data.webrtc.WebRtcClient
 import com.bangkit.naraspeak.databinding.ActivityVideoCallBinding
+import com.bangkit.naraspeak.helper.ViewModelFactory
+import com.bangkit.naraspeak.helper.createTemptFile
+import com.bangkit.naraspeak.ui.result.CompleteSessionActivity
 import io.socket.emitter.Emitter
 import org.webrtc.RendererCommon
+import java.io.IOException
 import java.util.Locale
 import java.util.Random
 
@@ -39,6 +48,15 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
     private var isListening = false
 
     private var generateRandomTopic: String? = null
+
+    private var mediaRecorder: MediaRecorder? = null
+    private var currentAudioFilePath: String? = null
+    private val history = HistoryEntity()
+
+    private val viewModel by viewModels<VideoCallViewModel> {
+        ViewModelFactory.getHistoryInstance(this@VideoCallActivity)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -194,7 +212,9 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
                         binding.btnRetry.setOnClickListener {
                             //receive the call
                             Log.d("VideoCallActivity", "Call accepted from ${dataModel.sender}")
-                            videoCallRepository.startCall(dataModel.sender.toString(), this@VideoCallActivity)
+                            videoCallRepository.startCall(dataModel.sender.toString())
+//                            videoCallRepository.startRecording(this@VideoCallActivity)
+                            startRecordAudio()
                             startListening()
 
 
@@ -247,6 +267,9 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             videoCallRepository.off("receive_audio_text"
             ) { }
             stopListening()
+            stopRecordAudio()
+            val intent = Intent(this@VideoCallActivity, CompleteSessionActivity::class.java)
+            startActivity(intent)
             finish()
         }
 
@@ -269,20 +292,67 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             binding.cardOverlayCall.root.visibility = View.VISIBLE
             binding.tvRecommendedTopic.visibility = View.VISIBLE
             binding.tvTimer.visibility = View.VISIBLE
+            startRecordAudio()
 
         }
+
+    }
+
+    private fun startRecordAudio() {
+        val fileLocation = createTemptFile(this@VideoCallActivity)
+        currentAudioFilePath = fileLocation.path
+
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                setOutputFile(fileLocation)
+            } else {
+                setOutputFile(fileLocation.absolutePath)
+            }
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        }
+        Log.d(TAG, "recordingLocation: ${fileLocation.path}")
+        try {
+            mediaRecorder?.prepare()
+            mediaRecorder?.start()
+        } catch (e: IOException) {
+            Log.e(TAG, "startRecording: ${e.message}")
+        } catch (e: IllegalStateException) {
+            Log.e(TAG, "startRecording: ${e.message}")
+        }
+
+    }
+
+    private fun stopRecordAudio() {
+        mediaRecorder?.stop()
+        mediaRecorder?.release()
+        mediaRecorder = null
+
+        currentAudioFilePath?.let {
+            history.audio = it
+            Log.d(TAG, "stopRecording: $it")
+            viewModel.insert(history)
+
+        }
+
+
 
     }
 
     override fun webRtcClosed() {
         runOnUiThread {
+            val intent = Intent(this@VideoCallActivity, CompleteSessionActivity::class.java)
+            startActivity(intent)
             finish()
 
         }
+        stopRecordAudio()
     }
 
     companion object {
         private const val TAG = "VideoCallActivity"
+        const val EXTRA_AUDIO = "extra_audio"
     }
 
 
