@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,10 +18,20 @@
             android:id="@+id/placeholder"
             android:layout_width="0dp"
             android:layout_height="197dp"
+            android:background="@color/accent_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="0dp"
+            android:layout_height="197dp"
             android:src="@drawable/logo_slice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/tv_confirm_grammar"
@@ -37,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@id/placeholder" />
 
 
-        <Button
+        <com.bangkit.naraspeak.ui.customview.CustomButton
             android:id="@+id/btn_yes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +58,7 @@
             app:layout_constraintEnd_toStartOf="@id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/tv_confirm_grammar" />
 
-        <Button
+        <com.bangkit.naraspeak.ui.customview.CustomButton
             android:id="@+id/btn_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -30,14 +30,7 @@ fun createTemptFile(context: Context): File {
     return File.createTempFile(date, ".wav", cacheDir)
 }
 
-//fun isValidPassword(password: String?): Boolean {
-//    val pattern: Pattern
-//    val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$"
-//    pattern = Pattern.compile(PASSWORD_PATTERN)
-//    val matcher: Matcher = pattern.matcher(password)
-//
-//    return matcher.matches()
-//}
+
 
 fun showLoading(isLoading: Boolean, loadingView: ProgressBar) {
     loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE

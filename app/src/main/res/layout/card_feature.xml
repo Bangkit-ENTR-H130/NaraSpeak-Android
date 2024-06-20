@@ -35,7 +35,7 @@
             android:id="@+id/feature_title"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="Call with Grammar Correction!"
+            android:text="Speak with Strangers"
             android:textAlignment="center"
             style="@style/TextStyle.Body.Bold"
             app:layout_constraintStart_toStartOf="parent"

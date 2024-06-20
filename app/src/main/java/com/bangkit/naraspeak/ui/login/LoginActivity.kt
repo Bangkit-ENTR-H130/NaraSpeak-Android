@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.ui.register.RegisterActivity
 import com.bangkit.naraspeak.databinding.ActivityLoginBinding
-import com.bangkit.naraspeak.helper.AccountViewModelFactory
+import com.bangkit.naraspeak.helper.CommonViewModelFactory
 import com.bangkit.naraspeak.helper.isValidEmail
 import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -31,8 +31,8 @@ import com.google.firebase.ktx.Firebase
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val accountViewModelFactory = AccountViewModelFactory.getInstance()
-    private val viewModel by viewModels<LoginViewModel> { accountViewModelFactory }
+    private val commonViewModelFactory = CommonViewModelFactory.getInstance()
+    private val viewModel by viewModels<LoginViewModel> { commonViewModelFactory }
 
     private lateinit var googleSignIn: GoogleSignInClient
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
-import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
@@ -22,7 +21,6 @@ import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.local.HistoryEntity
 import com.bangkit.naraspeak.databinding.ActivityVideoCallBinding
-import com.bangkit.naraspeak.helper.AccountViewModelFactory
 import com.bangkit.naraspeak.helper.HistoryViewModelFactory
 import com.bangkit.naraspeak.helper.createTemptFile
 import com.bangkit.naraspeak.ui.result.CompleteSessionActivity
@@ -263,6 +261,21 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             finish()
 
         }
+        stopRecordAudio()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopRecordAudio()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopRecordAudio()
+    }
+
+    override fun onStop() {
+        super.onStop()
         stopRecordAudio()
     }
 

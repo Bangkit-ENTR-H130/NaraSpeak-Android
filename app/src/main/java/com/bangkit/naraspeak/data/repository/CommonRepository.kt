@@ -4,26 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.bangkit.naraspeak.data.api.response.GrammarResponse
-import com.bangkit.naraspeak.data.api.response.UploadResponse
 import com.bangkit.naraspeak.data.api.retrofit.ApiService
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.model.UserModel
 import com.bangkit.naraspeak.helper.Result
-import com.bangkit.naraspeak.helper.UserResult
-import com.google.firebase.database.ValueEventListener
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class AccountRepository(
+class CommonRepository(
     private val apiService: ApiService,
     private val firebaseClient: FirebaseClient
 ) {
-
-    suspend fun postLogin(email: String, password: String) =
-        apiService.login(email, password)
-
-    suspend fun postRegister(name: String, email: String, password: String) =
-        apiService.register(name, email, password)
 
     fun updateName(displayName: String): LiveData<Result<Unit>>  = liveData {
         emit(Result.Loading)
@@ -50,17 +41,6 @@ class AccountRepository(
         })
     }
 
-    fun uploadAudio(audio: MultipartBody.Part): LiveData<Result<UploadResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            val client = apiService.upload(audio)
-            emit(Result.Success(client))
-        } catch (e: Exception) {
-            emit(Result.Failed(e.message.toString()))
-            Log.e("UploadAudio", "${e.message}")
-        }
-
-    }
 
     fun postGrammarPrediction(text: RequestBody): LiveData<Result<GrammarResponse>> = liveData {
         emit(Result.Loading)
@@ -77,15 +57,14 @@ class AccountRepository(
 
 
 
-
     companion object {
-        private var instance: AccountRepository? = null
+        private var instance: CommonRepository? = null
         fun getInstance(
             apiService: ApiService,
             firebaseClient: FirebaseClient
-        ): AccountRepository =
+        ): CommonRepository =
             instance ?: synchronized(this) {
-                instance ?: AccountRepository(apiService, firebaseClient)
+                instance ?: CommonRepository(apiService, firebaseClient)
             }.also { instance = it }
     }
 }

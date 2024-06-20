@@ -8,13 +8,25 @@
     android:background="@color/primary_1"
     tools:context=".ui.result.CompleteSessionActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.682" />
+
     <TextView
         android:id="@+id/tv_finish_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Session finish"
         style="@style/TextStyle.Headline1.Bold"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -33,7 +45,7 @@
 
     <include
         android:id="@+id/card_record"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/card_record"
         android:layout_marginTop="16dp"

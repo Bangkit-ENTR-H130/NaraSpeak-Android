@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.FragmentSettingBinding
-import com.bangkit.naraspeak.helper.AccountViewModelFactory
+import com.bangkit.naraspeak.helper.CommonViewModelFactory
 import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,8 +26,8 @@ class SettingFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
 
-    private val accountViewModelFactory = AccountViewModelFactory.getInstance()
-    private val viewModel by viewModels<SettingViewModel> { accountViewModelFactory }
+    private val commonViewModelFactory = CommonViewModelFactory.getInstance()
+    private val viewModel by viewModels<SettingViewModel> { commonViewModelFactory }
     val db = FirebaseDatabase.getInstance()
 
 

@@ -22,9 +22,16 @@ class ShopActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        var isSelected = false
         binding.premiumWeeklyCard.root.setOnClickListener {
-            binding.premiumWeeklyCard.selectedIndicator.visibility = View.VISIBLE
+//            if (!isSelected) {
+//                binding.premiumWeeklyCard.root.setBackgroundColor(getColor(R.color.secondary_6))
+//
+//            } else {
+//                binding.premiumWeeklyCard.root.setBackgroundColor(getColor(R.color.accent_black))
+//
+//            }
+//            isSelected = !isSelected
         }
 
     }

@@ -2,17 +2,17 @@ package com.bangkit.naraspeak.di
 
 import android.content.Context
 import com.bangkit.naraspeak.data.api.retrofit.ApiConfig
-import com.bangkit.naraspeak.data.repository.AccountRepository
+import com.bangkit.naraspeak.data.repository.CommonRepository
 import com.bangkit.naraspeak.data.repository.VideoCallRepository
 import com.bangkit.naraspeak.data.firebase.FirebaseClient
 import com.bangkit.naraspeak.data.local.HistoryDatabase
 import com.bangkit.naraspeak.data.repository.HistoryRepository
 
 object Injection {
-    fun provideAccountRepository(): AccountRepository {
+    fun provideAccountRepository(): CommonRepository {
         val apiConfig = ApiConfig.getApiService()
         val firebaseClient = FirebaseClient()
-        return AccountRepository.getInstance(apiConfig, firebaseClient)
+        return CommonRepository.getInstance(apiConfig, firebaseClient)
     }
 
     fun provideVideoCallRepository(): VideoCallRepository {

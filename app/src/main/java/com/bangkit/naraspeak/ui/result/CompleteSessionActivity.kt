@@ -19,8 +19,10 @@ import com.bangkit.naraspeak.BuildConfig
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.ActivityCompleteSessionBinding
 import com.bangkit.naraspeak.helper.Result
-import com.bangkit.naraspeak.helper.AccountViewModelFactory
+import com.bangkit.naraspeak.helper.CommonViewModelFactory
 import com.bangkit.naraspeak.helper.HistoryViewModelFactory
+import com.bangkit.naraspeak.helper.showLoading
+import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.bangkit.naraspeak.ui.videocall.VideoCallViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +45,7 @@ class CompleteSessionActivity : AppCompatActivity() {
     }
 
     private val uploadViewModel: CompleteSessionViewModel by viewModels {
-        AccountViewModelFactory.getInstance()
+        CommonViewModelFactory.getInstance()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,6 @@ class CompleteSessionActivity : AppCompatActivity() {
         }
 
         viewModel.getHistory().observe(this) {
-            binding.tvFinishDesc.text = it.audio
             currentAudioPath = "${it.audio}"
 
             binding.cardRecord.placeholder.setOnClickListener {
@@ -66,21 +67,6 @@ class CompleteSessionActivity : AppCompatActivity() {
             }
 
             binding.cardRecord.btnYes.setOnClickListener {
-                val audioToFile = File(currentAudioPath)
-                val requestBody = audioToFile.asRequestBody("audio/*".toMediaTypeOrNull())
-                val multiPartBody = MultipartBody.Part.createFormData("audio", audioToFile.name, requestBody)
-                uploadViewModel.uploadAudio(multiPartBody).observe(this) { result ->
-                    when (result) {
-                        is Result.Failed -> {}
-                        Result.Loading -> {}
-                        is Result.Success -> {
-                            // Handle success
-                        }
-                    }
-                }
-            }
-
-            binding.cardRecord.btnNo.setOnClickListener {
                 lifecycleScope.launch {
                     val aai: AssemblyAI = AssemblyAI.builder()
                         .apiKey(BuildConfig.KEY)
@@ -106,22 +92,36 @@ class CompleteSessionActivity : AppCompatActivity() {
                         uploadViewModel.postGrammarPrediction(requestBody).observe(this@CompleteSessionActivity) { result ->
                             when (result) {
                                 is Result.Failed -> {
+                                    showLoading(false, binding.progressBar)
+                                    Toast.makeText(this@CompleteSessionActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
+
 
                                 }
-                                Result.Loading -> {}
+                                Result.Loading -> {
+                                    showLoading(true, binding.progressBar)
+                                }
                                 is Result.Success -> {
+                                    showLoading(false, binding.progressBar)
                                     val intent = Intent(this@CompleteSessionActivity, ResultActivity::class.java)
                                     intent.putExtra(EXTRA_CORRECTION, result.data.predictions?.first())
                                     intent.putExtra(EXTRA_ORIGINAL, transcript.text.get())
 
                                     Log.d(TAG, "grammarCheck: ${result.data.predictions?.first()}"
                                     )
+                                    Toast.makeText(this@CompleteSessionActivity, "Grammar Check Success", Toast.LENGTH_SHORT).show()
+
                                     startActivity(intent)
                                 }
                             }
                         }
                     }
                 }
+            }
+
+            binding.cardRecord.btnNo.setOnClickListener {
+                val intent = Intent(this@CompleteSessionActivity, HomepageActivity::class.java)
+                startActivity(intent)
+
             }
         }
     }
@@ -141,6 +141,7 @@ class CompleteSessionActivity : AppCompatActivity() {
             mMediaPlayer?.setOnPreparedListener {
                 isReady = true
                 mMediaPlayer?.start()
+                binding.cardRecord.placeholder.setBackgroundColor(resources.getColor(R.color.black))
             }
             mMediaPlayer?.setOnErrorListener { mp, what, extra ->
                 Log.e(TAG, "MediaPlayer error: what=$what, extra=$extra")
@@ -161,10 +162,21 @@ class CompleteSessionActivity : AppCompatActivity() {
         }
         mMediaPlayer = null
         isReady = false
+        binding.cardRecord.placeholder.setBackgroundColor(resources.getColor(R.color.accent_black))
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        releaseMediaPlayer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        releaseMediaPlayer()
+    }
+
+    override fun onPause() {
+        super.onPause()
         releaseMediaPlayer()
     }
 

@@ -17,24 +17,15 @@ object ApiConfig {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         }
 
-//        val authorization = Interceptor {
-//            val request = it.request()
-//            val requestHeader = request.newBuilder()
-//                .addHeader("Authorization", "bb674687183144d99c8a336686e8a674")
-//                .build()
-//            it.proceed(requestHeader)
-//        }
 
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-//            .addInterceptor(authorization)
             .build()
 
 
 
         val retrofit = Retrofit.Builder()
             .client(client)
-            //ganti base url ke api buatan cc
             .baseUrl(com.bangkit.naraspeak.BuildConfig.URL_GRAMMAR)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
