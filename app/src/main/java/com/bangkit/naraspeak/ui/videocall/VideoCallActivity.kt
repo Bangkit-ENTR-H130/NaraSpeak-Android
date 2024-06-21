@@ -74,13 +74,6 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
         initiateVideoCall()
 
-        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
-        mSpeechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        mSpeechRecognizerIntent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
 
     }
@@ -120,7 +113,6 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             override fun onNewEvent(dataModel: DataModel) {
                 if (dataModel.dataModelType == DataModelType.StartCall) {
                     runOnUiThread {
-                        binding.incomingNameTV.text = dataModel.sender + " is Calling you"
                         binding.tvRecommendedTopic.text = "Recommended topic: $generateRandomTopic"
 
                         binding.btnRetry.setOnClickListener {
@@ -157,13 +149,10 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 //                                                }
 //                                            }
 
-                            binding.incomingCallLayout.visibility = View.GONE
-                            binding.whoToCallLayout.visibility = View.GONE
+
 
                         }
-                        binding.rejectButton.setOnClickListener {
-                            binding.incomingCallLayout.visibility = View.GONE
-                        }
+
                     }
 
                 }
@@ -194,8 +183,6 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
     override fun webRtcConnected() {
         runOnUiThread {
-            binding.incomingCallLayout.visibility = View.GONE
-            binding.whoToCallLayout.visibility = View.GONE
             binding.callLayout.visibility = View.VISIBLE
             binding.layoutLoading.visibility = View.GONE
             binding.cardOverlayCall.root.visibility = View.VISIBLE

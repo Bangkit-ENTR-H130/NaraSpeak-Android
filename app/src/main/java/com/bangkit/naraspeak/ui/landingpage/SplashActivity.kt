@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.google.firebase.Firebase
@@ -17,6 +18,8 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         setContentView(R.layout.activity_splash)
 
         enableEdgeToEdge()
