@@ -83,10 +83,7 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
 
-
     }
-
-
 
     private fun initiateVideoCall() {
         videoCallRepository.setLocalView(binding.vcUser1)
@@ -94,8 +91,6 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
 
         binding.vcUser1.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
         binding.vcUser2.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
-
-
 
 
         videoCallRepository.connectionListener = this
@@ -205,7 +200,7 @@ class VideoCallActivity : AppCompatActivity(), VideoCallRepository.WebRTCConnect
             binding.layoutLoading.visibility = View.GONE
             binding.cardOverlayCall.root.visibility = View.VISIBLE
             binding.tvRecommendedTopic.visibility = View.VISIBLE
-            binding.tvTimer.visibility = View.VISIBLE
+//            binding.tvTimer.visibility = View.VISIBLE
             startRecordAudio()
 
         }

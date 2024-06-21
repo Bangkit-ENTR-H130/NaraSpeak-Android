@@ -10,6 +10,7 @@ import com.bangkit.naraspeak.ui.homepage.HomepageActivity
 import com.bangkit.naraspeak.ui.login.LoginActivity
 import com.bangkit.naraspeak.R
 import com.bangkit.naraspeak.databinding.ActivityMainBinding
+import com.bangkit.naraspeak.ui.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnStart.setOnClickListener {
-            val intent = Intent(this, HomepageActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 

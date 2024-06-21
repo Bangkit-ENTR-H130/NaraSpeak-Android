@@ -17,6 +17,7 @@ import com.assemblyai.api.AssemblyAI
 import com.assemblyai.api.resources.transcripts.types.TranscriptOptionalParams
 import com.bangkit.naraspeak.BuildConfig
 import com.bangkit.naraspeak.R
+import com.bangkit.naraspeak.data.local.HistoryEntity
 import com.bangkit.naraspeak.databinding.ActivityCompleteSessionBinding
 import com.bangkit.naraspeak.helper.Result
 import com.bangkit.naraspeak.helper.CommonViewModelFactory
@@ -63,7 +64,11 @@ class CompleteSessionActivity : AppCompatActivity() {
             currentAudioPath = "${it.audio}"
 
             binding.cardRecord.placeholder.setOnClickListener {
-                initMediaPlayer(currentAudioPath)
+                if (isReady) {
+                    handleMediaPlayer()
+                } else {
+                    initMediaPlayer(currentAudioPath)
+                }
             }
 
             binding.cardRecord.btnYes.setOnClickListener {
@@ -87,15 +92,12 @@ class CompleteSessionActivity : AppCompatActivity() {
                     """.trimIndent()
                     val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), jsonText)
 
-
                     withContext(Dispatchers.Main) {
                         uploadViewModel.postGrammarPrediction(requestBody).observe(this@CompleteSessionActivity) { result ->
                             when (result) {
                                 is Result.Failed -> {
                                     showLoading(false, binding.progressBar)
                                     Toast.makeText(this@CompleteSessionActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
-
-
                                 }
                                 Result.Loading -> {
                                     showLoading(true, binding.progressBar)
@@ -121,35 +123,48 @@ class CompleteSessionActivity : AppCompatActivity() {
             binding.cardRecord.btnNo.setOnClickListener {
                 val intent = Intent(this@CompleteSessionActivity, HomepageActivity::class.java)
                 startActivity(intent)
-
             }
         }
     }
 
     private fun initMediaPlayer(filePath: String) {
-        releaseMediaPlayer()
+        if (mMediaPlayer == null) {
+            mMediaPlayer = MediaPlayer()
+            val attributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
+            mMediaPlayer?.setAudioAttributes(attributes)
 
-        mMediaPlayer = MediaPlayer()
-        val attributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_MEDIA)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .build()
-        mMediaPlayer?.setAudioAttributes(attributes)
+            try {
+                mMediaPlayer?.setDataSource(this@CompleteSessionActivity, Uri.parse(filePath))
+                mMediaPlayer?.setOnPreparedListener {
+                    isReady = true
+                    mMediaPlayer?.start()
+                    binding.cardRecord.placeholder.setBackgroundColor(getColor(R.color.black))
+                }
+                mMediaPlayer?.setOnErrorListener { mp, what, extra ->
+                    Log.e(TAG, "MediaPlayer error: what=$what, extra=$extra")
+                    false
+                }
+                mMediaPlayer?.prepareAsync()
+            } catch (e: IOException) {
+                Log.e(TAG, "Error setting data source", e)
+            }
+        } else {
+            handleMediaPlayer()
+        }
+    }
 
-        try {
-            mMediaPlayer?.setDataSource(this@CompleteSessionActivity, Uri.parse(filePath))
-            mMediaPlayer?.setOnPreparedListener {
-                isReady = true
-                mMediaPlayer?.start()
-                binding.cardRecord.placeholder.setBackgroundColor(resources.getColor(R.color.black))
+    private fun handleMediaPlayer() {
+        mMediaPlayer?.let {
+            if (it.isPlaying) {
+                it.pause()
+                binding.cardRecord.placeholder.setBackgroundColor(getColor(R.color.white)) // Set to original color or whatever color you prefer
+            } else {
+                it.start()
+                binding.cardRecord.placeholder.setBackgroundColor(getColor(R.color.black))
             }
-            mMediaPlayer?.setOnErrorListener { mp, what, extra ->
-                Log.e(TAG, "MediaPlayer error: what=$what, extra=$extra")
-                false
-            }
-            mMediaPlayer?.prepareAsync()
-        } catch (e: IOException) {
-            Log.e(TAG, "Error setting data source", e)
         }
     }
 
@@ -159,10 +174,10 @@ class CompleteSessionActivity : AppCompatActivity() {
                 stop()
             }
             release()
+            binding.cardRecord.placeholder.background = resources.getDrawable(R.drawable.frame_121, null)
         }
         mMediaPlayer = null
         isReady = false
-        binding.cardRecord.placeholder.setBackgroundColor(resources.getColor(R.color.accent_black))
     }
 
     override fun onDestroy() {

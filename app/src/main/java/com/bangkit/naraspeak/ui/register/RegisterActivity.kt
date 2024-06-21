@@ -60,7 +60,6 @@ class RegisterActivity : AppCompatActivity() {
 
         val email = binding.edEmailRegister.text.toString()
         val password = binding.edPasswordRegister.text.toString()
-        val confirmPassword = binding.edConfirmPassword.text.toString()
 
         binding.btnRegister.isEnabled = false
         binding.edPasswordRegister.addTextChangedListener(textWatcher)
@@ -76,12 +75,11 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btnRegister.setOnClickListener {
             signUpManually(binding.edEmailRegister.text.toString(), binding.edPasswordRegister.text.toString())
-            Log.d(TAG, "onCreate: $email $password")
         }
 
         binding.btnLoginHere.setOnClickListener {
-            Log.d(TAG, "onCreate: $email $password")
-
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
         }
 
 

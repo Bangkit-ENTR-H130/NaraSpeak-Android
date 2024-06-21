@@ -72,6 +72,10 @@ class HomeFragment : Fragment() {
             featureTitle.text = "Group call"
             featureDesc.text = "Talk with someone you know in group"
 
+            root.setOnClickListener{
+                Toast.makeText(requireActivity(), "Coming soon", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.tvDisplayName.text = user?.displayName
@@ -82,9 +86,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardMain.setOnClickListener {
-//            startVideoCall()
-            val intent = Intent(requireActivity(), CompleteSessionActivity::class.java)
-            requireActivity().startActivity(intent)
+            startVideoCall()
         }
 
         binding.cardFeature1.root.setOnClickListener {

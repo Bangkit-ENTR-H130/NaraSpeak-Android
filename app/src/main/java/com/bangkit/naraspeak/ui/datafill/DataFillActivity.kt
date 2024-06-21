@@ -68,8 +68,6 @@ class DataFillActivity : AppCompatActivity() {
                             Log.d(TAG, "Name not updated: ${it.exception}")
                         }
 
-                        Log.d(TAG, "name: ${user.displayName}")
-                        Log.d(TAG, "nameupdate: ${profileUpdate.displayName}")
                     }
 //                viewModel.updateName(binding.edName.text.toString())
 
